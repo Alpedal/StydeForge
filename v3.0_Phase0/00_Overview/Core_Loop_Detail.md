@@ -19,7 +19,8 @@ Phase 1 implements.
 - Blueprint validated (`validate_blueprint()` passed)
 - Benchmark selected with task.md and rubric.yaml
 - USB mounted and writable
-- Hermes Agent v0.17.0 running
+- Styde Forge running on Hermes Agent v0.17.0+
+- DeepSeek API key configured and reachable
 
 ---
 
@@ -271,6 +272,64 @@ status: "passed"
 ---
 
 **Status:** Defined. Exact specification for Phase 1 implementation.
+
+---
+
+## 6. Error Handling
+
+Every loop step must handle failures gracefully:
+
+| Step | Failure Mode | Response |
+|------|-------------|----------|
+| DEFINE | Blueprint not found | Log error, skip to next blueprint |
+| DEFINE | Blueprint validation failed | Log validation errors, skip |
+| SPAWN | delegate_task timeout (300s) | Retry once. If still timeout: mark agent failed, log |
+| SPAWN | API error (429 rate limit) | Wait 5s, retry. Max 3 retries |
+| SPAWN | API error (5xx server error) | Wait 10s, retry. Max 2 retries |
+| SPAWN | Garbage output (unparseable) | Mark as self_eval=0, send to judge anyway |
+| SELF-EVAL | Agent didn't include self-eval | Score=0, flag for teacher review |
+| JUDGE-EVAL | Judge API error | Fallback: use self-eval score only |
+| JUDGE-EVAL | Judge + self-eval diverge >20pts | Trigger Cross-Judge Consensus |
+| IMPROVE | Teacher API error | Skip improvement, use last known good blueprint |
+| CHECKPOINT | Disk full | Trigger maintenance. If critical: pause loop |
+| CHECKPOINT | USB disconnected | Emergency: save to local temp, alert human |
+
+```python
+def loop_with_errors(blueprint: str, benchmark: str) -> dict:
+    try:
+        # DEFINE
+        context = load_blueprint_context(blueprint)
+    except BlueprintError as e:
+        return {"status": "skipped", "reason": str(e)}
+
+    try:
+        # SPAWN (with retry)
+        output = spawn_with_retry(context, max_retries=3)
+    except SpawnError as e:
+        return {"status": "failed", "step": "spawn", "reason": str(e)}
+
+    try:
+        # EVALUATE
+        self_eval = run_self_eval(output)
+    except Exception:
+        self_eval = {"score": 0, "error": "self_eval_failed"}
+
+    try:
+        judge_eval = run_judge_eval(output)
+    except JudgeError:
+        judge_eval = {"score": self_eval["score"], "fallback": True}
+
+    composite = calculate_composite(self_eval, judge_eval)
+
+    if composite >= 80:
+        try:
+            improve(blueprint, composite, judge_eval)
+            checkpoint()
+        except Exception as e:
+            log_error("improve_or_checkpoint_failed", e)
+
+    return {"status": "completed", "score": composite}
+```
 
 ---
 

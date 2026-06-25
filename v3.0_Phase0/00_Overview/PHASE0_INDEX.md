@@ -7,10 +7,11 @@
 
 ---
 
-## Dokumentöversikt (52 dokument)
+## Dokumentöversikt (53 dokument)
 
 | # | Sektion | Dokument | Beskrivning |
 |---|---------|----------|-------------|
+| 00 | Overview | `System_Startup_Shutdown.md` | Start- och nedstängningssekvens |
 | 00 | Overview | `PHASE0_INDEX.md` | Detta index |
 | 00 | Overview | `Master_Architecture_Overview.md` | Hög-nivå arkitektur, lager, dataflöde |
 | 00 | Overview | `USB_Directory_Structure.md` | Exakt filmappstruktur på USB |

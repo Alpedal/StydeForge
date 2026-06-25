@@ -9,53 +9,71 @@
 
 Styde Forge v3.0 is a **portable, evolutionary elite-agent refinery** on USB.
 
-It transforms raw agent blueprints into world-class specialized agents through
+Raw agent blueprints are transformed into world-class specialized agents through
 a continuous loop of spawning, evaluation, improvement, and checkpointing.
 
 **Not a content factory — a refinery.** Quality over quantity. Nothing below
-80/100 reaches the USB.
+80/100 reaches the USB. Caveman Ultra mode ON by default: 70% fewer tokens.
 
 ---
 
-## 2. Architecture Layers
+## 2. Complete Architecture
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                    PARENT HERMES                             │
-│                                                             │
-│  ┌─────────────────────────────────────────────────────┐   │
-│  │              META-LAYER                              │   │
-│  │  ┌──────────────┐ ┌──────────────┐ ┌─────────────┐  │   │
-│  │  │ Model        │ │ Historical   │ │ Version     │  │   │
-│  │  │ Selector     │ │ Learning     │ │ Increment   │  │   │
-│  │  └──────────────┘ └──────────────┘ └─────────────┘  │   │
-│  │  ┌──────────────┐ ┌──────────────┐                  │   │
-│  │  │ Self-        │ │ Hardware     │                  │   │
-│  │  │ Monitoring   │ │ Adaptation   │                  │   │
-│  │  └──────────────┘ └──────────────┘                  │   │
-│  └─────────────────────────────────────────────────────┘   │
-│                            │                                │
-│                    ┌───────┴───────┐                        │
-│                    │   SUBAGENT    │                        │
-│                    │   SPAWNING    │                        │
-│                    └───────┬───────┘                        │
-│                            │                                │
-│  ┌─────────────────────────────────────────────────────┐   │
-│  │               EVAL PIPELINE                          │   │
-│  │  Self-Eval → LLM-as-Judge → Cross-Consensus         │   │
-│  │           → Bias Calibration → Bayesian Opt         │   │
-│  └─────────────────────────────────────────────────────┘   │
-│                            │                                │
-│  ┌─────────────────────────────────────────────────────┐   │
-│  │            PERSISTENCE & SAFETY                      │   │
-│  │  Atomic Transactions → Checkpoints → Recovery       │   │
-│  └─────────────────────────────────────────────────────┘   │
-│                            │                                │
-│                     ┌──────┴──────┐                         │
-│                     │     USB     │                         │
-│                     │ PERSISTENCE │                         │
-│                     └─────────────┘                         │
-└─────────────────────────────────────────────────────────────┘
+                         ┌─────────────────────────┐
+                         │     STYDE FORGE          │
+                         │     (Parent Process)     │
+                         └────────────┬────────────┘
+                                      │
+              ┌───────────────────────┼───────────────────────┐
+              │                       │                       │
+     ┌────────┴────────┐   ┌─────────┴─────────┐   ┌────────┴────────┐
+     │  HARDWARE LAYER │   │    META-LAYER     │   │  TEACHER AGENT  │
+     │                 │   │                   │   │                 │
+     │ • Auto-detect   │   │ • Model Selector  │   │ • Analyze evals │
+     │ • Profile match │   │ • Historical Learn│   │ • Give feedback │
+     │ • Adapt params  │   │ • Version Incr    │   │ • Extract skills│
+     │ • Resource Gov  │   │ • Health Monitor  │   │ • Coach agents  │
+     └────────┬────────┘   └─────────┬─────────┘   └────────┬────────┘
+              │                       │                       │
+              └───────────────────────┼───────────────────────┘
+                                      │
+                         ┌────────────┴────────────┐
+                         │    SUBAGENT SPAWN       │
+                         │                         │
+                         │ • Skill Loading         │
+                         │ • Blueprint Validation  │
+                         │ • Caveman Ultra inject  │
+                         │ • delegate_task()       │
+                         └────────────┬────────────┘
+                                      │
+              ┌───────────────────────┼───────────────────────┐
+              │                       │                       │
+     ┌────────┴────────┐   ┌─────────┴─────────┐   ┌────────┴────────┐
+     │  EVAL PIPELINE  │   │  KNOWLEDGE MGMT   │   │  HOOKS & EVENTS │
+     │  (6 layers)     │   │                   │   │                 │
+     │                 │   │ • Acquire sources │   │ • 17 events     │
+     │ 1. Self-Eval    │   │ • Synthesize      │   │ • Webhooks      │
+     │ 2. LLM-as-Judge │   │ • Index           │   │ • Scripts       │
+     │ 3. Cross-Judge  │   │ • Store on USB    │   │ • Alerts        │
+     │ 4. Bias Calib   │   │ • Retrieve context│   │ • Throttle      │
+     │ 5. Auto-Valid   │   └───────────────────┘   └─────────────────┘
+     │ 6. Bayesian Opt │
+     └────────┬────────┘
+              │
+     ┌────────┴────────┐
+     │ PERSISTENCE     │
+     │                 │
+     │ • Atomic writes │
+     │ • Checkpoints   │
+     │ • Recovery      │
+     │ • Export/Import │
+     └────────┬────────┘
+              │
+     ┌────────┴────────┐
+     │      USB        │
+     │   (48 GB)       │
+     └─────────────────┘
 ```
 
 ---
@@ -68,54 +86,45 @@ DEFINE ──→ SPAWN ──→ EVALUATE ──→ IMPROVE ──→ CHECKPOINT
    └───────────────────────────────────────────────┘
 ```
 
-### 3.1 Define
-Create or refine an agent blueprint (persona, skills, config, hardware profile).
-
-### 3.2 Spawn
-Launch subagent via `delegate_task` with:
-- Dynamically selected model
-- Domain-specific skills
-- Historical context and lessons
-
-### 3.3 Evaluate
-Six-layer evaluation:
-1. **Self-Eval** — agent evaluates its own output
-2. **LLM-as-Judge** — independent model judges against rubric
-3. **Cross-Judge Consensus** — multiple judges compared
-4. **Bias Calibration** — periodic calibration against known benchmarks
-5. **Automatic Validation** — automated tests + benchmarks
-6. **Bayesian Weight Optimization** — adaptive weight updates
-
-### 3.4 Improve
-Teacher/coach analyzes eval results and:
-- Extracts successful patterns as new skills
-- Identifies recurring weaknesses
-- Proposes concrete blueprint improvements
-- Updates version via Automatic Version Increment
-
-### 3.5 Checkpoint
-Atomic snapshot of entire forge state:
-- Full state.yaml
-- All blueprints with version history
-- Agent run history
-- Eval results
+| Step | What happens | Model |
+|------|-------------|-------|
+| DEFINE | Load blueprint, validate, build context | — |
+| SPAWN | delegate_task with Caveman Ultra + skills | `deepseek-v4-flash` |
+| SELF-EVAL | Agent scores own output | `deepseek-v4-flash` |
+| JUDGE-EVAL | Independent model judges against rubric | `deepseek-v4-pro` |
+| IMPROVE | Teacher analyzes, proposes changes, extracts skills | `deepseek-v4-pro` |
+| CHECKPOINT | Atomic snapshot of entire state | — |
 
 ---
 
-## 4. Hardware Adaptivity
+## 4. Dual-Model Strategy
 
-| Parameter | Machine-A (Beast) | Machine-B (Main) |
-|-----------|-------------------|------------------|
-| GPUs | 3090 (24GB) + 3080 (10GB) | 3080 (10GB) + 3070 Ti (8GB) |
+| Role | Model | Tokens/iter | Cost/iter |
+|------|-------|-------------|-----------|
+| Agent spawn | `deepseek-v4-flash` | ~1200-2400 | ~$0.001 |
+| Judge eval | `deepseek-v4-pro` | ~400-800 | ~$0.001 |
+| Teacher feedback | `deepseek-v4-pro` | ~400-800 | ~$0.001 |
+| **Total per iteration** | | **~2000-4000** | **~$0.003** |
+
+Caveman Ultra mode reduces tokens by 70%. Flash for 80% of calls, Pro for 20%.
+
+---
+
+## 5. Hardware Profiles
+
+| Parameter | Machine-A (Beast) | Machine-B (Main/Pontus) |
+|-----------|-------------------|------------------------|
+| GPUs | 3090 24GB + 3080 10GB | 3080 10GB + 3070 Ti 8GB |
 | Total VRAM | 34 GB | 18 GB |
-| RAM | 64 GB | 32 GB |
+| RAM | 64 GB DDR4 | 32 GB DDR5 |
 | Sampling | NUTS (depth 11) | VI (depth 8) |
 | Workers | 4 | 1-2 |
-| Models | 70B-405B | 7B-14B |
+| Agent model | deepseek-v4-flash | deepseek-v4-flash |
+| Eval model | deepseek-v4-pro | deepseek-v4-pro |
 
 ---
 
-## 5. Design Principles
+## 6. Design Principles
 
 | Principle | Meaning |
 |-----------|---------|
@@ -124,22 +133,30 @@ Atomic snapshot of entire forge state:
 | **Hardware aware** | System auto-adapts to available resources |
 | **Full traceability** | Every decision, eval, and version change is logged |
 | **Quality gate** | Nothing below 80/100 is saved |
-| **Self-contained** | The USB is the entire system — no external dependencies |
+| **Caveman default** | 70% fewer tokens, 2× faster, 3× cheaper |
+| **Self-contained** | The USB is the entire system |
+
+---
+
+## 7. Document Map
+
+| Section | Documents | Purpose |
+|---------|-----------|---------|
+| 00_Overview | 12 | Architecture, loop, interfaces, data models, config, glossary |
+| 01_Vision | 2 | Vision, goals, blueprint catalog |
+| 02_Hardware | 2 | Adaptation layer, resource governor |
+| 03_Eval_Pipeline | 7 | 6 eval layers + benchmark catalog |
+| 04_Sampling_Stack | 5 | NUTS, HMC, VI, dual averaging, tree depth |
+| 05_Meta_Layer | 4 | Model selector, learning, versioning, health |
+| 06_Persistence_Safety | 4 | Atomic writes, checkpoints, recovery, risks |
+| 07_Multi_Agent | 2 | Collaboration, security |
+| 08_Import_Export | 2 | Import, sync strategy |
+| 09_Risk_Maintenance | 1 | Maintenance and cleanup |
+| 10_Operations | 7 | Skills, validation, logging, costs, oversight, API keys, Caveman Ultra |
+| 11_Knowledge_Management | 1 | Knowledge lifecycle |
+| 12_Teacher_Agent | 1 | Teacher loop, feedback, skill extraction |
+| 13_Hooks_Events | 1 | Event system, hooks |
 
 ---
 
 **Status:** Phase 0 — Design & Foundation
-
----
-
-## Related Documents
-
-- `01_Vision/Vision_and_Goals.md` — What we're building and why
-- `USB_Directory_Structure.md` — Where everything lives on USB
-- `Data_Models.md` — All YAML/JSON schemas
-- `Core_Loop_Detail.md` — Exact loop specification
-- `Component_Interfaces.md` — How components communicate
-- `03_Eval_Pipeline/` — 7 evaluation documents
-- `04_Sampling_Stack/` — 5 Bayesian sampling documents
-- `05_Meta_Layer/` — 4 meta-layer documents
-- `06_Persistence_Safety/` — 4 safety documents

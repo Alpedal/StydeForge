@@ -12,7 +12,7 @@
 
 Styde Forge v3.0 is not a content factory. It does not maximize GB/hour.
 It maximizes **agent quality per generation** through continuous evaluation,
-probabilistic weight optimization, and teacher-guided improvement.
+teacher-guided improvement, and Caveman Ultra efficiency (70% fewer tokens).
 
 ---
 

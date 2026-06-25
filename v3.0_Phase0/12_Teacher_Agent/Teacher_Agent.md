@@ -153,6 +153,10 @@ Teacher always uses `deepseek-v4-pro` — its analysis quality
 directly impacts all downstream agent improvements. Agent spawn
 uses `deepseek-v4-flash` for speed; Teacher uses Pro for depth.
 
+Teacher operates on Caveman Ultra output from agents — analyzing
+compact, structured data rather than verbose prose. Feedback is
+equally compact: one-line diagnoses, one-line fixes.
+
 ---
 
 **Status:** Defined. Teacher loop, prompt template, output schema.

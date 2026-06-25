@@ -14,6 +14,9 @@ evaluated — eliminating self-evaluation bias.
 The judge uses `deepseek-v4-pro` for maximum evaluation quality.
 Judge model selection is NOT dynamic — eval quality must never be compromised.
 
+All eval output follows Caveman Ultra format: minimal text, YAML where possible,
+no markdown, no fluff. Judge receives raw agent output, returns structured scores.
+
 ---
 
 ## 2. Weighted Eval Template (100 points)

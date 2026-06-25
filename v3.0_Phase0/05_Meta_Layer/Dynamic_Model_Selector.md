@@ -7,81 +7,101 @@
 
 ## 1. Purpose
 
-Automatically select the optimal model for each subagent based on task,
-hardware constraints, and historical performance data.
+Select the optimal model for each forge operation. In v3.0 this is
+a simple rule-based selector: Flash for agents, Pro for eval/teacher.
+v3.1+ adds historical-performance-weighted selection.
 
 ---
 
-## 2. Decision Weights
+## 2. Model Selection Rules (v3.0)
 
-| Factor | Weight | Description |
-|--------|--------|-------------|
-| Domain specialization | 30% | How well the model fits the task domain |
-| Hardware compatibility | 25% | Does it fit in available VRAM? |
-| Historical performance | 20% | Past scores on similar tasks |
-| Task type fit | 15% | Reasoning vs coding vs creativity |
-| Cost / latency | 10% | API cost and inference speed |
+```python
+def select_model(role: str) -> str:
+    """
+    Simple, fast, predictable.
 
----
-
-## 3. Example Output
-
-```json
-{
-  "selected_model": "DeepSeek-Coder-V2-32B",
-  "confidence": 0.91,
-  "reasoning": "Highest historical HumanEval on architecture tasks. Fits in 18GB VRAM with 4-bit quantization.",
-  "alternatives": ["Qwen2.5-32B", "Hermes-4-70B-4bit"]
-}
+    Flash (agents):  $0.14/M output, fast, good enough
+    Pro (eval):      $0.28/M output, highest quality
+    """
+    ROLES = {
+        "agent":    "deepseek-v4-flash",
+        "spawn":    "deepseek-v4-flash",
+        "subagent": "deepseek-v4-flash",
+        "self_eval":"deepseek-v4-flash",  # Agent evals itself
+        "judge":    "deepseek-v4-pro",    # Quality-critical
+        "teacher":  "deepseek-v4-pro",    # Quality-critical
+        "meta":     "deepseek-v4-pro",    # Quality-critical
+        "consensus":"deepseek-v4-pro",    # Quality-critical
+    }
+    return ROLES.get(role, "deepseek-v4-flash")
 ```
+
+---
+
+## 3. Why Not More Complex? (v3.0)
+
+| Would add | Why we skip it in v3.0 |
+|-----------|----------------------|
+| Per-domain model selection | Flash is good enough for all 6 domains |
+| Historical performance weighting | Not enough data yet (0 agents spawned) |
+| Cost/latency trade-off | Flash is already cheapest + fastest |
+| Hardware-aware model choice | We use API, not local models |
+
+**v3.1+:** When Historical Learning has 500+ eval results, add per-domain
+model performance tracking and dynamic selection.
 
 ---
 
 ## 4. Dual-Model Strategy (Flash + Pro)
 
-The forge uses a two-tier model strategy:
+| Role | Model | Tokens/iter | Cost/iter | % of calls |
+|------|-------|-------------|-----------|------------|
+| Agent spawn | `deepseek-v4-flash` | ~1200-2400 | ~$0.001 | 60% |
+| Self-eval | `deepseek-v4-flash` | ~200-400 | ~$0.0002 | 20% |
+| Judge eval | `deepseek-v4-pro` | ~400-800 | ~$0.001 | 10% |
+| Teacher feedback | `deepseek-v4-pro` | ~400-800 | ~$0.001 | 10% |
+| **Total per iteration** | | **~2200-4400** | **~$0.003** | 100% |
 
-| Role | Model | Why |
-|------|-------|-----|
-| **Agent spawn** | `deepseek-v4-flash` | Fast, cheap, good enough for code/research/docs |
-| **LLM-as-Judge** | `deepseek-v4-pro` | Eval quality is critical — never compromise |
-| **Teacher feedback** | `deepseek-v4-pro` | Deep analysis requires stronger reasoning |
-| **Meta-improver** | `deepseek-v4-pro` | Complex system analysis |
-| **Cross-Judge Consensus** | `deepseek-v4-pro` | Second/third judge opinions |
-
-```python
-def select_model_for_role(role: str, hardware: dict) -> str:
-    """
-    Flash for agents (80% of calls), Pro for eval/teacher (20%).
-    """
-    if role in ("agent", "spawn", "subagent"):
-        return "deepseek-v4-flash"
-    elif role in ("judge", "teacher", "meta", "consensus"):
-        return "deepseek-v4-pro"
-    else:
-        return "deepseek-v4-flash"  # Default: fast & cheap
-```
-
-### Per-Iteration Cost
-
-| Step | Model | Est. tokens | Est. cost |
-|------|-------|-------------|-----------|
-| Agent spawn | Flash | 4K in, 2K out | ~$0.0011 |
-| Judge eval | Pro | 2K in, 1K out | ~$0.0006 |
-| Teacher review | Pro | 3K in, 1K out | ~$0.0007 |
-| **Total per iteration** | | | **~$0.0024** |
-| **100 agents (16 GB)** | | | **~$0.24** |
-
-## 5. Model Selection by Domain
-
-| Domain | Preferred Model |
-|--------|----------------|
-| Coding & Architecture | DeepSeek-Coder-32B |
-| Research & Synthesis | Balanced fast model |
-| Teacher/Coach | Strongest available |
-| Edge-case testing | High robustness model |
-| Meta-improvement | Most capable model |
+Caveman Ultra mode reduces these by 70%: ~700-1300 tokens/iteration, ~$0.001.
 
 ---
 
-**Status:** Core meta-layer component.
+## 5. Model Failover
+
+```python
+def select_with_failover(role: str) -> str:
+    primary = select_model(role)
+    if model_available(primary):
+        return primary
+
+    # Failover: if Pro is down, use Flash for everything
+    if "pro" in primary:
+        log_warning(f"deepseek-v4-pro unavailable, falling back to flash")
+        return "deepseek-v4-flash"
+
+    # If Flash is down too, we're dead
+    raise ForgeError("No models available")
+```
+
+---
+
+## 6. Integration
+
+- Called by `forge.py agent spawn` before each delegate_task
+- Called by eval pipeline for judge model selection
+- Called by teacher agent for feedback model
+- Failover logged to `logs/errors/`
+- Model usage tracked by Cost Token Tracking
+
+---
+
+**Status:** v3.0 — rule-based. v3.1+ — data-driven.
+
+---
+
+## Related Documents
+
+- `02_Hardware/Hardware_Adaptation_Layer.md` — Hardware profiles with model defaults
+- `10_Operations/Cost_Token_Tracking.md` — Cost tracking per model
+- `10_Operations/API_Key_Management.md` — Key validation
+- `10_Operations/Caveman_Ultra_Mode.md` — Token reduction strategy
