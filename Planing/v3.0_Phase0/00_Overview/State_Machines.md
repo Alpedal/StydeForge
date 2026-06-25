@@ -79,7 +79,7 @@ are allowed, and what triggers each transition.
             │          │          │
             ▼          ▼          ▼
        ┌─────────────────────────────┐
-       │        eval_pending         │
+       │        eval_pending         │ ← StydeAgents/refinery/<name>/evals/
        └─────────────┬───────────────┘
                      │
           ┌──────────┼──────────┐
@@ -87,26 +87,32 @@ are allowed, and what triggers each transition.
           ▼          ▼          ▼
      ┌────────┐ ┌────────┐ ┌────────┐
      │ passed │ │retrying│ │rejected│
-     └────┬───┘ └───┬────┘ └────────┘
-          │         │
-          ▼         │ (max 3 retries)
-     ┌────────┐    │
-     │ saved  │◄───┘
-     └────────┘
+     │ ≥85    │ │ 70-84  │ │ <70    │
+     └────┬───┘ └───┬────┘ └───┬────┘
+          │         │          │
+          ▼         │ (max 3)  ▼
+┌─────────────────┐│    ┌──────────────┐
+│ production/     ││    │ archive/     │
+│ Deployed, ready │◄┘    │ Lessons kept │
+└─────────────────┘      └──────────────┘
 ```
 
-| State | Description |
-|-------|-------------|
-| **pending_spawn** | Agent record created, not yet spawned |
-| **running** | delegate_task executing |
-| **completed** | Agent finished successfully |
-| **failed** | Agent returned error |
-| **timeout** | Agent exceeded time limit |
-| **eval_pending** | Output ready, awaiting evaluation |
-| **passed** | Composite score ≥ 80 |
-| **retrying** | Score 70-79, re-spawning with improvements |
-| **rejected** | Score < 70 or 3 retries exhausted |
-| **saved** | Agent written to USB |
+| State | Path | Description |
+|-------|------|-------------|
+| **pending_spawn** | `refinery/<name>/` | Agent record created, not yet spawned |
+| **running** | `refinery/<name>/` | delegate_task executing |
+| **eval_pending** | `refinery/<name>/evals/` | Output ready, awaiting evaluation |
+| **retrying** | `refinery/<name>/` | Score 70-84, re-spawning with improvements |
+| **passed/production** | `production/<name>/` | Score ≥85 on 3 consecutive evals. Deployed. |
+| **rejected/archive** | `archive/<name>/` | Score <70 or 3 retries exhausted. Lessons saved. |
+
+### Move Rules
+
+| From | To | When |
+|------|----|------|
+| `refinery/` | `production/` | ≥85/100 on 3 consecutive evals |
+| `production/` | `archive/` | Agent deprecated or replaced |
+| `refinery/` | `archive/` | <70/100 or 3 retries exhausted |
 
 ---
 

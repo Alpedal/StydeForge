@@ -13,7 +13,8 @@ Raw agent blueprints are transformed into world-class specialized agents through
 a continuous loop of spawning, evaluation, improvement, and checkpointing.
 
 **Not a content factory — a refinery.** Quality over quantity. Nothing below
-80/100 reaches the USB. Caveman Ultra mode ON by default: 70% fewer tokens.
+80/100 survives an eval. Agents must score ≥85 on 3 consecutive evals to
+reach production. Caveman Ultra mode ON by default: 70% fewer tokens.
 
 ---
 
@@ -134,7 +135,7 @@ Caveman Ultra mode reduces tokens by 70%. Flash for 80% of calls, Pro for 20%.
 | **Atomicity first** | All writes are transactional — never partial |
 | **Hardware aware** | System auto-adapts to available resources |
 | **Full traceability** | Every decision, eval, and version change is logged |
-| **Quality gate** | Nothing below 80/100 is saved |
+| **Quality gate** | Nothing below 80/100 saved. ≥85×3 → production. |
 | **Caveman default** | 70% fewer tokens, 2× faster, 3× cheaper |
 | **Self-contained** | The USB is the entire system |
 

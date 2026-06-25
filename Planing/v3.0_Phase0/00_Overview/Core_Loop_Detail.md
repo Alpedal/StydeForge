@@ -45,7 +45,7 @@ Phase 1 implements.
 11. Build spawn_context string
 ```
 
-**Output:** `spawn_context.md`, `spawn_task.md` written to agent directory
+**Output:** `spawn_context.md`, `spawn_task.md` written to `StydeAgents/refinery/<agent-name>/`
 
 ---
 
@@ -79,7 +79,7 @@ delegate_task(
 - Subagent produces output following its persona format
 - Timeout: 300 seconds (configurable)
 
-**Output:** Agent output saved to `agents/<agent-id>/runs/<run-id>/output.md`
+**Output:** Agent output saved to `StydeAgents/refinery/<agent-name>/runs/<run-id>/output.md`
 
 ---
 
@@ -158,7 +158,7 @@ composite_score = (
 passed = composite_score >= min_pass_score
 ```
 
-**Output:** `eval.yaml` with composite score and pass/fail
+**Output:** `eval.yaml` with composite score and pass/fail. On ≥85 ×3: move agent from `refinery/` to `production/`.
 
 ---
 
@@ -166,21 +166,23 @@ passed = composite_score >= min_pass_score
 
 Conditional on eval results:
 
-#### If PASSED (≥80):
+#### If PASSED (≥85, 3 consecutive):
 ```
-1. Extract successful patterns → new skill candidate
-2. Run Automatic Version Increment
-3. Update blueprint with new version
-4. Save to Historical Learning database
-5. Log success
+1. Move agent: StydeAgents/refinery/<name>/ → StydeAgents/production/<name>/
+2. Update AGENT.md → stage: production, status: deployed
+3. Extract successful patterns → new skill candidate
+4. Run Automatic Version Increment
+5. Update blueprint with new version
+6. Save to Historical Learning database
+7. Log success
 ```
 
-#### If NEEDS WORK (70-79):
+#### If NEEDS WORK (70-84):
 ```
 1. Teacher analyzes weaknesses from eval
 2. Generate concrete improvement suggestions
 3. Update blueprint (patch version)
-4. Schedule re-spawn with improvements
+4. Agent stays in refinery/ — schedule re-spawn with improvements
 5. Max 3 retry attempts
 ```
 
@@ -188,8 +190,8 @@ Conditional on eval results:
 ```
 1. Log detailed failure analysis
 2. Save lessons to Historical Learning (anti-patterns)
-3. Do NOT save agent to USB
-4. Agent directory archived or deleted
+3. Move agent: StydeAgents/refinery/<name>/ → StydeAgents/archive/<name>/
+4. Do NOT save to production
 ```
 
 ---

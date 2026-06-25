@@ -27,19 +27,33 @@ HermesForge/
 │       ├── index.json                #   Searchable index
 │       └── sources/                  #   Source references with links
 │
-├── 02_AGENTS/                        # Spawned agent instances
-│   └── <agent-id>/                   #   One folder per agent
-│       ├── AGENT.md                  #   Metadata, lineage, status
-│       ├── spawn_context.md          #   Full context used at spawn
-│       ├── spawn_task.md             #   Task the agent was given
-│       ├── checkpoints/              #   Per-agent checkpoints
-│       └── runs/                     #   Execution history
-│           └── <run-id>/
-│               ├── input.md          #   Task and context
-│               ├── output.md         #   Agent's response
-│               ├── self_eval.yaml    #   Self-evaluation
-│               ├── judge_eval.yaml   #   LLM-as-Judge evaluation
-│               └── eval.yaml         #   Composite result
+├── StydeAgents/                      # Agent lifecycle storage
+│   ├── README.md                      # Lifecycle rules
+│   │
+│   ├── data/                          # Static data — never modified by agents
+│   │   ├── benchmarks/                #   Custom per-agent benchmarks
+│   │   ├── knowledge/                 #   Domain knowledge for context
+│   │   └── templates/                 #   Blueprint templates
+│   │
+│   ├── refinery/                      # Agents in the Forge loop
+│   │   └── <agent-name>/              #   One folder per agent in progress
+│   │       ├── AGENT.md               #   Status, iteration, lineage
+│   │       ├── blueprint.md           #   Current version
+│   │       ├── persona.md
+│   │       ├── skills/
+│   │       ├── runs/                  #   Per-iteration input/output
+│   │       └── evals/                 #   Per-iteration eval results
+│   │
+│   ├── production/                    # World-class agents (≥85/100)
+│   │   └── <agent-name>/              #   Deployed, stable
+│   │       ├── AGENT.md               #   Final metadata + eval
+│   │       ├── blueprint.md           #   Final version
+│   │       ├── persona.md
+│   │       ├── skills/
+│   │       └── eval/                  #   Final eval results
+│   │
+│   └── archive/                       # Retired/rejected agents
+│       └── <agent-name>/              #   Lessons preserved, read-only
 │
 ├── 03_HOOKS/                         # Minimal, focused integrations
 │   ├── integrations/                 #   System integrations
@@ -122,7 +136,7 @@ HermesForge/
 
 | Category | Budget | Path |
 |----------|--------|------|
-| Agents | 25 GB | `02_AGENTS/` |
+| Agents (250-350 elite) | 25 GB | `StydeAgents/production/` |
 | Knowledge | 8 GB | `01_KNOWLEDGE/` |
 | Skills & Hooks | 5 GB | `04_SKILLS/`, `03_HOOKS/` |
 | Eval Results & Lineage | 4 GB | `07_GENERATIONS/`, agent runs |

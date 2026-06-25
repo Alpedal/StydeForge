@@ -34,13 +34,15 @@ blueprints:
     created: "2026-06-25T10:00:00Z"
 
 agents:
-  - id: "agent-code-reviewer-20260625-123000"
-    blueprint: "code-reviewer"
-    blueprint_version: 1
-    benchmark: "code-review-basic"
-    status: "pending_spawn"    # pending_spawn | running | completed | failed
+  - name: "invoice-processor"
+    blueprint: "invoice-processor"
+    version: 3
+    stage: "production"          # refinery | production | archive
+    status: "deployed"           # pending_spawn | running | eval_pending | retrying | deployed | archived
+    path: "StydeAgents/production/invoice-processor/"
+    composite_score: 89
+    evals_passed: 5
     spawned: "2026-06-25T12:30:00Z"
-    run_count: 0
 
 evaluations:
   - agent_id: "agent-code-reviewer-20260625-123000"
