@@ -5,30 +5,30 @@
 
 ---
 
-## 1. Huvudlayout
+## 1. Main Layout
 
 ```
 ┌──────────────────────────────────────────────────────────────────┐
 │ StydeForge — Mission Control                              ─ □ ✕ │
 ├──────────────────────────────────────────────────────────────────┤
-│ [▶ Start] [⏸ Pausa] [⏹ Stopp]  │ ⚙ │ ● Forge Running — 3 agents │
+│ [▶ Start] [⏸ Pause] [⏹ Stop]  │ ⚙ │ ● Forge Running — 3 agents│
 ├──────────────┬───────────────────────┬───────────────────────────┤
 │              │                       │                           │
-│   AGENTS     │    BENCHMARKS         │    CHATT                  │
+│   AGENTS     │    BENCHMARKS         │    CHAT                   │
 │              │                       │                           │
 │ ┌──────────┐ │  ┌─────────────────┐  │ ┌───────────────────────┐ │
-│ │Agent 1   │ │  │  Tokens/s ████  │  │ │ User: optimera min    │ │
+│ │Agent 1   │ │  │  Tokens/s ████  │  │ │ User: optimize my     │ │
 │ │● running │ │  │  Latency  ██    │  │ │ config                │ │
 │ │deepseek  │ │  │  Cost     █     │  │ │                       │ │
-│ └──────────┘ │  └─────────────────┘  │ │ Agent: Jag läser din   │ │
+│ └──────────┘ │  └─────────────────┘  │ │ Agent: Reading your    │ │
 │ ┌──────────┐ │                       │ │ config.yaml...         │ │
 │ │Agent 2   │ │  ┌─────────────────┐  │ │                       │ │
-│ │✓ klar    │ │  │  Eval Scores    │  │ │ ───────────────────── │ │
+│ │✓ done    │ │  │  Eval Scores    │  │ │ ───────────────────── │ │
 │ │87/100    │ │  │  ████████░░ 78% │  │ │                       │ │
-│ └──────────┘ │  └─────────────────┘  │ │ [Skriv meddelande...] │ │
+│ └──────────┘ │  └─────────────────┘  │ │ [Type message...]     │ │
 │ ┌──────────┐ │                       │ └───────────────────────┘ │
 │ │Agent 3   │ │  ┌─────────────────┐  │                           │
-│ │✗ felat  │ │  │  Modell-jmf     │  │                           │
+│ │✗ failed │ │  │  Model compare  │  │                           │
 │ └──────────┘ │  └─────────────────┘  │                           │
 │              │                       │                           │
 ├──────────────┴───────────────────────┴───────────────────────────┤
@@ -38,9 +38,9 @@
 
 ---
 
-## 2. Grid-system
+## 2. Grid System
 
-CSS Grid-baserad layout:
+CSS Grid-based layout:
 
 ```css
 .dashboard {
@@ -55,81 +55,81 @@ CSS Grid-baserad layout:
 }
 ```
 
-| Grid-area | Innehåll | Höjd |
-|-----------|----------|------|
-| `titlebar` | Anpassad titelrad + kontrollknappar + status | 48px |
-| `agents` | Agentpanel — scrollbar lista | flex 1 |
-| `benches` | Benchmarkpanel — grafer | flex 1 |
-| `chat` | Chattpanel — meddelanden + input | flex 1 |
-| `status` | Statusfält — tokens, kostnad, agenter | 32px |
+| Grid Area | Content | Height |
+|-----------|---------|--------|
+| `titlebar` | Custom title bar + control buttons + status | 48px |
+| `agents` | Agent panel — scrollable list | flex 1 |
+| `benches` | Benchmark panel — charts | flex 1 |
+| `chat` | Chat panel — messages + input | flex 1 |
+| `status` | Status bar — tokens, cost, agents | 32px |
 
 ---
 
-## 3. Titelrad
+## 3. Title Bar
 
 ```
 ┌──────────────────────────────────────────────────────────────────┐
 │ [S] StydeForge — Mission Control                          ─ □ ✕ │
 ├──────────────────────────────────────────────────────────────────┤
-│ [▶ Start] [⏸ Pausa] [⏹ Stopp] │ ⚙ │ ● Forge Running — 3 active │
+│ [▶ Start] [⏸ Pause] [⏹ Stop] │ ⚙ │ ● Forge Running — 3 active │
 └──────────────────────────────────────────────────────────────────┘
 ```
 
-| Element | Position | Beskrivning |
+| Element | Position | Description |
 |---------|----------|-------------|
-| Logotyp | Vänster, 24×24px | "S" i en hexagon |
-| Titel | Vänster, efter logotyp | "StydeForge — Mission Control" |
-| Kontrollknappar | Vänster, efter titel | Start/Pausa/Stopp med ikoner |
-| Inställningar | Höger, före fönsterknappar | ⚙ kugghjulsikon |
-| Statusindikator | Mellan kontroller och ⚙ | Grön/Gul/Röd prick + text |
-| Fönsterknappar | Längst till höger | Minimera/Maximera/Stäng |
+| Logo | Left, 24×24px | "S" in a hexagon |
+| Title | Left, after logo | "StydeForge — Mission Control" |
+| Control buttons | Left, after title | Start/Pause/Stop with icons |
+| Settings | Right, before window buttons | ⚙ gear icon |
+| Status indicator | Between controls and ⚙ | Green/Yellow/Red dot + text |
+| Window buttons | Far right | Minimize/Maximize/Close |
 
 ---
 
-## 4. Panel-design
+## 4. Panel Design
 
-### 4.1 Panel-header
+### 4.1 Panel Header
 
-Varje panel har en header:
+Each panel has a header:
 
 ```
 ┌────────────────────────┐
-│ 📡 AGENTS    [📌] [✕] │  ← header: ikon + titel + pin/close
+│ 📡 AGENTS    [📌] [✕] │  ← header: icon + title + pin/close
 ├────────────────────────┤
 │                        │
-│   Innehåll             │  ← scrollbart innehåll
+│   Content              │  ← scrollable content
 │                        │
 └────────────────────────┘
 ```
 
-### 4.2 Panel-egenskaper
+### 4.2 Panel Properties
 
-| Egenskap | Beskrivning |
+| Property | Description |
 |----------|-------------|
-| Header-höjd | 36px |
-| Bakgrund | `#1a1a2e` (mörkblå) |
-| Kantlinje | 1px `#2a2a4a` mellan paneler |
-| Scrollbar | Anpassad tunn (6px), mörk |
-| Min-bredd | 200px |
-| Resize handle | 4px bred, ändrar cursor till `col-resize` |
+| Header height | 36px |
+| Background | `#1a1a2e` (dark blue) |
+| Border | 1px `#2a2a4a` between panels |
+| Scrollbar | Custom thin (6px), dark |
+| Min width | 200px |
+| Resize handle | 4px wide, cursor changes to `col-resize` |
 
-### 4.3 Panel-tabbar (kompakt läge)
+### 4.3 Panel Tabs (compact mode)
 
-När fönstret är <1100px brett:
+When window is <1100px wide:
 
 ```
 ┌──────────────────────┐
-│ [Agenter][Bench][Chat]│  ← tabbar
+│ [Agents][Bench][Chat] │  ← tabs
 ├──────────────────────┤
 │                      │
-│  Aktiv panel         │
+│  Active panel        │
 │                      │
 └──────────────────────┘
 ```
 
 ---
 
-## 5. Statusfält
+## 5. Status Bar
 
 ```
 ┌──────────────────────────────────────────────────────────────────┐
@@ -137,36 +137,36 @@ När fönstret är <1100px brett:
 └──────────────────────────────────────────────────────────────────┘
 ```
 
-| Fält | Format | Uppdatering |
-|------|--------|-------------|
-| Status | ●/○ ikon + text | Vid tillståndsbyte |
-| Agenter | "X agents" | Var 2s |
-| Tokens | "12.4K tokens" | Var 10s |
-| Kostnad | "$0.037" | Var 10s |
-| Hastighet | "⚡ 45 t/s" | Var 10s |
-| CPU-temp | "23°C" | Var 30s |
+| Field | Format | Update Interval |
+|-------|--------|-----------------|
+| Status | ●/○ icon + text | On state change |
+| Agents | "X agents" | Every 2s |
+| Tokens | "12.4K tokens" | Every 10s |
+| Cost | "$0.037" | Every 10s |
+| Speed | "⚡ 45 t/s" | Every 10s |
+| CPU temp | "23°C" | Every 30s |
 
 ---
 
-## 6. Responsiv design
+## 6. Responsive Design
 
-| Brytpunkt | Layout |
+| Breakpoint | Layout |
 |-----------|--------|
-| ≥1400px | Tre paneler sida vid sida (30/35/35) |
-| 1100-1399px | Två paneler (agents + chatt), benchmarks som tab |
-| 900-1099px | Två paneler (40/60) |
-| <900px | En panel i taget med tabbar |
+| ≥1400px | Three panels side by side (30/35/35) |
+| 1100-1399px | Two panels (agents + chat), benchmarks as tab |
+| 900-1099px | Two panels (40/60) |
+| <900px | One panel at a time with tabs |
 
 ---
 
-## 7. Tomma tillstånd
+## 7. Empty States
 
-| Tillstånd | Visning |
-|-----------|---------|
-| Inga agenter | "No agents active. Start Forge or spawn manually." + [Start Forge]-knapp |
-| Inga benchmarks | "No benchmark data yet. Run agents to collect metrics." |
-| Tom chatt | "StydeForge Chat — ask me anything. I can read/write files, run commands, and use skills." |
-| Forge ej startad | Alla paneler visar tomma tillstånd, statusfält: "● Stopped" |
+| State | Display |
+|-------|---------|
+| No agents | "No agents active. Start Forge or spawn manually." + [Start Forge] button |
+| No benchmarks | "No benchmark data yet. Run agents to collect metrics." |
+| Empty chat | "StydeForge Chat — ask me anything. I can read/write files, run commands, and use skills." |
+| Forge not started | All panels show empty states, status bar: "● Stopped" |
 
 ---
 

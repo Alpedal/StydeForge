@@ -5,13 +5,13 @@
 
 ---
 
-## 1. Översikt
+## 1. Overview
 
-Alla återanvändbara UI-komponenter. Byggda som Web Components eller vanilla JS — inga ramverk. Varje komponent har HTML-struktur, CSS, och JS-beteende definierat.
+All reusable UI components. Built as Web Components or vanilla JS — no frameworks. Each component has HTML structure, CSS, and JS behavior defined.
 
 ---
 
-## 2. Komponentkatalog
+## 2. Component Catalog
 
 ### 2.1 `sf-button`
 
@@ -21,37 +21,37 @@ Alla återanvändbara UI-komponenter. Byggda som Web Components eller vanilla JS
 </sf-button>
 ```
 
-| Attribut | Värden | Beskrivning |
-|----------|--------|-------------|
-| `variant` | `primary`, `secondary`, `danger`, `ghost` | Visuell stil |
-| `size` | `sm`, `md`, `lg` | Storlek (default: md) |
-| `icon` | Valfri emoji/unicode | Ikon före text |
-| `disabled` | boolean | Inaktiv knapp |
+| Attribute | Values | Description |
+|-----------|--------|-------------|
+| `variant` | `primary`, `secondary`, `danger`, `ghost` | Visual style |
+| `size` | `sm`, `md`, `lg` | Size (default: md) |
+| `icon` | Any emoji/unicode | Icon before text |
+| `disabled` | boolean | Inactive button |
 
 ### 2.2 `sf-panel`
 
 ```html
 <sf-panel title="Agents" icon="📡" collapsible pinned>
-  <!-- panel-innehåll -->
+  <!-- panel content -->
 </sf-panel>
 ```
 
-| Attribut | Värden | Beskrivning |
-|----------|--------|-------------|
-| `title` | string | Panel-header text |
-| `icon` | string | Panel-ikon |
-| `collapsible` | boolean | Kan kollapsas |
-| `pinned` | boolean | Fastnålad (kan ej stängas) |
+| Attribute | Values | Description |
+|-----------|--------|-------------|
+| `title` | string | Panel header text |
+| `icon` | string | Panel icon |
+| `collapsible` | boolean | Can be collapsed |
+| `pinned` | boolean | Pinned (can't be closed) |
 
 ### 2.3 `sf-tabs`
 
 ```html
 <sf-tabs>
   <sf-tab label="Agents" icon="📡" active>
-    <!-- innehåll -->
+    <!-- content -->
   </sf-tab>
   <sf-tab label="Benchmarks" icon="📊">
-    <!-- innehåll -->
+    <!-- content -->
   </sf-tab>
 </sf-tabs>
 ```
@@ -81,7 +81,7 @@ Alla återanvändbara UI-komponenter. Byggda som Web Components eller vanilla JS
 </sf-agent-card>
 ```
 
-Visuell design:
+Visual design:
 ```
 ┌─────────────────────────────────────┐
 │ ● code-reviewer-v3         87/100  │
@@ -98,23 +98,23 @@ Visuell design:
 </sf-chart>
 ```
 
-| Attribut | Värden | Beskrivning |
-|----------|--------|-------------|
-| `type` | `line`, `bar`, `gauge`, `sparkline` | Typ av graf |
-| `data` | JSON | Datapunkter |
-| `width` | CSS-värde | Bredd |
-| `height` | CSS-värde | Höjd |
-| `dark` | boolean | Alltid true i vårt fall |
+| Attribute | Values | Description |
+|-----------|--------|-------------|
+| `type` | `line`, `bar`, `gauge`, `sparkline` | Chart type |
+| `data` | JSON | Data points |
+| `width` | CSS value | Width |
+| `height` | CSS value | Height |
+| `dark` | boolean | Always true in our case |
 
 ### 2.7 `sf-log-viewer`
 
 ```html
 <sf-log-viewer lines="100" filter="ERROR" auto-scroll>
-  loggtext...
+  log text...
 </sf-log-viewer>
 ```
 
-Virtuell scroll för prestanda med stora loggar.
+Virtual scrolling for performance with large logs.
 
 ### 2.8 `sf-modal`
 
@@ -133,21 +133,21 @@ Virtuell scroll för prestanda med stora loggar.
 </sf-toast>
 ```
 
-Flyter in från botten-höger, auto-dismiss.
+Floats in from bottom-right, auto-dismiss.
 
 ---
 
-## 3. Chatt-specifika komponenter
+## 3. Chat-Specific Components
 
 ### 3.1 `sf-chat-message`
 
 ```html
 <sf-chat-message role="user" timestamp="15:42">
-  optimera min config
+  optimize my config
 </sf-chat-message>
 
 <sf-chat-message role="assistant" model="deepseek-v4-pro" tokens="342" time="1.2s">
-  Jag har läst din config.yaml. Här är min analys...
+  I've read your config.yaml. Here's my analysis...
 </sf-chat-message>
 ```
 
@@ -162,7 +162,7 @@ Flyter in från botten-höger, auto-dismiss.
 </sf-chat-input>
 ```
 
-### 3.3 `sf-tool-call` (inbäddad i chatt)
+### 3.3 `sf-tool-call` (embedded in chat)
 
 ```html
 <sf-tool-call tool="read_file" status="running">
@@ -176,7 +176,7 @@ Flyter in från botten-höger, auto-dismiss.
 
 ---
 
-## 4. Provider-komponenter
+## 4. Provider Components
 
 ### 4.1 `sf-provider-card`
 
@@ -193,7 +193,7 @@ Flyter in från botten-höger, auto-dismiss.
 
 ```html
 <sf-provider-form mode="add">
-  <!-- Formulär för att lägga till ny provider -->
+  <!-- Form to add new provider -->
   <sf-input label="Provider Name" />
   <sf-input label="API Base URL" />
   <sf-input label="API Key" type="password" />
@@ -203,26 +203,26 @@ Flyter in från botten-höger, auto-dismiss.
 
 ---
 
-## 5. Komponent-states
+## 5. Component States
 
-Varje komponent har definierade tillstånd:
+Every component has defined states:
 
-| State | CSS-klass | Exempel |
+| State | CSS Class | Example |
 |-------|-----------|---------|
-| Default | — | Normalt tillstånd |
-| Hover | `.hover` | Mus över |
-| Active | `.active` | Klickad |
-| Focus | `.focus` | Tangentbordsfokus |
-| Disabled | `.disabled` | Inaktiv |
-| Loading | `.loading` | Visar spinner |
-| Error | `.error` | Fel-tillstånd |
-| Empty | `.empty` | Ingen data |
+| Default | — | Normal state |
+| Hover | `.hover` | Mouse over |
+| Active | `.active` | Clicked |
+| Focus | `.focus` | Keyboard focus |
+| Disabled | `.disabled` | Inactive |
+| Loading | `.loading` | Shows spinner |
+| Error | `.error` | Error state |
+| Empty | `.empty` | No data |
 
 ---
 
 ## 6. Implementation
 
-Alla komponenter implementeras som **Web Components** (Custom Elements v1):
+All components implemented as **Web Components** (Custom Elements v1):
 
 ```javascript
 class SfButton extends HTMLElement {
@@ -252,11 +252,11 @@ class SfButton extends HTMLElement {
 customElements.define('sf-button', SfButton);
 ```
 
-**Fördelar:**
-- Inga ramverk — noll beroenden
-- Scoped CSS — inga stil-krockar
-- Native web standard — fungerar i alla WebView-miljöer
-- Lätt att testa — varje komponent isolerad
+**Benefits:**
+- No frameworks — zero dependencies
+- Scoped CSS — no style collisions
+- Native web standard — works in all WebView environments
+- Easy to test — each component isolated
 
 ---
 

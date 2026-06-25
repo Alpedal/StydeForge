@@ -5,136 +5,134 @@
 
 ---
 
-## 1. Översikt
+## 1. Overview
 
-Dashboarden är master-controllern för hela StydeForge-systemet. Tre tillstånd:
+The Dashboard is the master controller for the entire StydeForge system. Three states:
 
 ```
          ┌──────────────┐
     ┌───→│  STOPPED     │←───┐
     │    └──────┬───────┘    │
-    │           │ [Start]    │ [Stopp]
+    │           │ [Start]    │ [Stop]
     │           ▼            │
     │    ┌──────────────┐    │
     │    │  RUNNING     │────┘
     │    └──────┬───────┘
-    │           │ [Pausa]
+    │           │ [Pause]
     │           ▼
     │    ┌──────────────┐
     └────│  PAUSED      │
          └──────────────┘
-              │ [Start] = Återuppta
+              │ [Start] = Resume
 ```
 
 ---
 
-## 2. Tillstånd: STOPPED
+## 2. State: STOPPED
 
-**Indikator i UI:** Röd status-prick + "StydeForge: Inaktiv"
+**UI indicator:** Red status dot + "StydeForge: Inactive"
 
-| Egenskap | Värde |
+| Property | Value |
 |----------|-------|
-| Hermes-processer | Inga Forge-processer körs |
-| Cron-jobb | Pausade |
-| Agent-panel | Visar "Inga agenter aktiva" |
-| Systemresurser | Dashboard använder minimal CPU/RAM |
-| Vid exit | Fråga om Forge ska startas |
+| Hermes processes | No Forge processes running |
+| Cron jobs | Paused |
+| Agent panel | Shows "No agents active" |
+| System resources | Dashboard uses minimal CPU/RAM |
+| On exit | Prompt whether to start Forge |
 
 ---
 
-## 3. Tillstånd: RUNNING
+## 3. State: RUNNING
 
-**Indikator i UI:** Grön status-prick + "StydeForge: Kör — 3 agenter aktiva"
+**UI indicator:** Green status dot + "StydeForge: Running — 3 agents active"
 
-**Vad som startas:**
+**Startup sequence:**
 
 ```
 Dashboard [▶ Start]
      │
-     ├─→ 1. Validera config
-     │      └─ Kolla att alla providers har API-nycklar
+     ├─→ 1. Validate config
+     │      └─ Check all providers have API keys
      │
-     ├─→ 2. Starta Hermes Forge-loop
-     │      └─ Spawna som child-process: hermes forge start
+     ├─→ 2. Start Hermes Forge loop
+     │      └─ Spawn as child process: hermes forge start
      │
-     ├─→ 3. Starta cron-jobb
-     │      └─ Om auto-start av specifika jobb är konfigurerat
+     ├─→ 3. Start cron jobs
+     │      └─ If auto-start of specific jobs is configured
      │
-     └─→ 4. Börja polla agentstatus
-            └─ Var 2:a sekund: hermes process list
+     └─→ 4. Begin polling agent status
+            └─ Every 2 seconds: hermes process list
 ```
 
-**Child-process management:**
-- Hermes körs som en child-process under Dashboarden
-- Dashboarden äger processens livscykel
-- Om Dashboarden kraschar → Hermes stängs (graceful)
-- Om Hermes kraschar → Dashboarden visar fel och erbjuder omstart
+**Child process management:**
+- Hermes runs as child process under Dashboard
+- Dashboard owns the process lifecycle
+- If Dashboard crashes → Hermes gets graceful shutdown
+- If Hermes crashes → Dashboard shows error, offers restart
 
 ---
 
-## 4. Tillstånd: PAUSED
+## 4. State: PAUSED
 
-**Indikator i UI:** Gul status-prick + "StydeForge: Pausad"
+**UI indicator:** Yellow status dot + "StydeForge: Paused"
 
-**Vad som pausas:**
-
-| Komponent | Åtgärd |
+| Component | Action |
 |-----------|--------|
-| Agent-spawning | Inga nya agenter startas |
-| Aktiva agenter | Får slutföra nuvarande uppgift |
-| Cron-jobb | Temporärt inaktiva (sätts i paus-läge) |
-| Eval-pipeline | Pausas efter nuvarande eval |
-| Dashboard UI | Fortsätter uppdatera, men visar paus-status |
+| Agent spawning | No new agents started |
+| Active agents | Allowed to finish current task |
+| Cron jobs | Temporarily disabled (set to pause mode) |
+| Eval pipeline | Paused after current evaluation |
+| Dashboard UI | Continues updating, shows paused status |
 
-**Återuppta:** Klicka [▶ Start] → allt återupptas där det var.
+**Resume:** Click [▶ Start] → everything resumes where it was.
 
 ---
 
-## 5. Stopp-sekvens (graceful shutdown)
+## 5. Stop Sequence (Graceful Shutdown)
 
 ```
-Dashboard [⏹ Stopp]
+Dashboard [⏹ Stop]
      │
-     ├─→ 1. Visa bekräftelsedialog
-     │      "Stoppa StydeForge? 3 agenter körs just nu."
-     │      [Stoppa ändå] [Vänta tills klart] [Avbryt]
+     ├─→ 1. Show confirmation dialog
+     │      "Stop StydeForge? 3 agents currently running."
+     │      [Stop Anyway] [Wait Until Done] [Cancel]
      │
-     ├─→ 2. Signalera stopp till Forge-loopen
-     │      └─ Låt nuvarande agenter avsluta (timeout: 30s)
+     ├─→ 2. Signal stop to Forge loop
+     │      └─ Let current agents finish (timeout: 30s)
      │
-     ├─→ 3. Spara checkpoints
-     │      └─ Alla pågående agenter sparar sitt tillstånd
+     ├─→ 3. Save checkpoints
+     │      └─ All active agents save their state
      │
-     ├─→ 4. Stäng cron-jobb
-     │      └─ Sätt status=paused på alla aktiva cron-jobb
+     ├─→ 4. Stop cron jobs
+     │      └─ Set status=paused on all active cron jobs
      │
-     ├─→ 5. Döda Hermes-processen
-     │      └─ SIGTERM → vänta 5s → SIGKILL
+     ├─→ 5. Kill Hermes process
+     │      └─ SIGTERM → wait 5s → SIGKILL
      │
-     └─→ 6. Uppdatera UI
-            └─ Röd prick, "StydeForge: Inaktiv"
+     └─→ 6. Update UI
+            └─ Red dot, "StydeForge: Inactive"
 ```
 
 ---
 
 ## 6. Edge Cases
 
-| Scenario | Beteende |
+| Scenario | Behavior |
 |----------|----------|
-| Användare stänger fönstret (✕) | Om Forge körs: minimera till tray (default) eller fråga |
-| Användare stänger via tray | Stäng helt (om Forge ej kör) eller fråga |
-| Windows stängs av / reboot | Dashboarden fångar WM_QUERYENDSESSION → graceful shutdown |
-| Strömavbrott / force kill | Nästa start: "Forge stängdes oväntat. Återställ?" → kör recovery |
-| Dubbelstart av Dashboard | Andra instansen detekterar första → fokusera befintligt fönster → avsluta |
+| User closes window (✕) | If Forge running: minimize to tray (default) or prompt |
+| User closes via tray | Close fully (if Forge not running) or prompt |
+| Windows shutdown/reboot | Dashboard captures WM_QUERYENDSESSION → graceful shutdown |
+| Power loss / force kill | Next start: "Forge shut down unexpectedly. Restore?" → run recovery |
+| Double-launch of Dashboard | Second instance detects first → focus existing window → exit |
 
 ---
 
-## 7. Auto-start
+## 7. Auto-Start
 
-Valfritt (⚙ inställningar):
-- Starta Dashboard med Windows
-- Auto-starta Forge när Dashboard öppnas
-- Starta minimerad till system tray
+Optional (⚙ settings):
+- Start Dashboard with Windows
+- Auto-start Forge when Dashboard opens
+- Start minimized to system tray
 
 ---
 

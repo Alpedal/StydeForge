@@ -5,9 +5,9 @@
 
 ---
 
-## 1. Översikt
+## 1. Overview
 
-Dashboarden hanterar Hermes som en child-process via Tauris Rust-backend:
+The Dashboard manages Hermes as a child process via Tauri's Rust backend:
 
 ```
 ┌─────────────────────────────────┐
@@ -36,12 +36,12 @@ Dashboarden hanterar Hermes som en child-process via Tauris Rust-backend:
 
 ---
 
-## 2. Process-spawning
+## 2. Process Spawning
 
 ### 2.1 Hermes Forge Loop
 
 ```rust
-// Pseudokod — Tauri Rust-backend
+// Pseudocode — Tauri Rust backend
 let hermes_process = Command::new("hermes")
     .args(["forge", "start"])
     .env("HERMES_PROFILE", "default")
@@ -49,16 +49,16 @@ let hermes_process = Command::new("hermes")
     .stderr(Stdio::piped())
     .spawn()?;
 
-// Spara PID för senare kontroll
+// Save PID for later control
 state.hermes_pid = hermes_process.id();
 ```
 
-### 2.2 Ad-hoc Hermes-kommandon
+### 2.2 Ad-hoc Hermes Commands
 
-Dashboarden kör även kortlivade Hermes-kommandon för datahämtning:
+Dashboard also runs short-lived Hermes commands for data polling:
 
 ```rust
-// Polla agentstatus — körs och returnerar direkt
+// Poll agent status — runs and returns immediately
 let output = Command::new("hermes")
     .args(["process", "list", "--json"])
     .output()?;
@@ -68,97 +68,95 @@ let agents: Vec<Agent> = serde_json::from_str(&output.stdout)?;
 
 ---
 
-## 3. Processövervakning
+## 3. Process Monitoring
 
-Dashboarden övervakar Hermes-processen kontinuerligt:
+Dashboard monitors the Hermes process continuously:
 
-| Händelse | Detektering | Åtgärd |
-|----------|-------------|--------|
-| Process kraschar | `WaitForSingleObject` på process handle | Visa felmeddelande, erbjud omstart |
-| Process hänger sig | Inget stdout på 60s | Varning i UI, erbjud force kill |
-| Hög CPU | >80% i 30s | Varning: "Hermes använder mycket CPU" |
-| Hög minnesanvändning | >4GB | Varning: "Hermes använder mycket minne" |
-
----
-
-## 4. Kommunikation med Hermes
-
-### 4.1 stdout/stderr — Realtidslogg
-
-Hermes stdout och stderr pipes läses kontinuerligt:
-- Varje rad parsas (JSON-lines format från Hermes loggning)
-- Relevant data skickas till UI:t (statusuppdateringar, fel)
-- Råa loggar sparas till disk för felsökning
-
-### 4.2 Signalhantering
-
-| Signal | Användning |
-|--------|------------|
-| SIGTERM | "Stoppa graceful" — Hermes avslutar aktiv iteration |
-| SIGINT | "Pausa" — Hermes pausar efter nuvarande steg |
-| SIGKILL | Force kill (sista utväg, efter timeout) |
+| Event | Detection | Action |
+|-------|-----------|--------|
+| Process crashes | `WaitForSingleObject` on process handle | Show error, offer restart |
+| Process hangs | No stdout for 60s | Warning in UI, offer force kill |
+| High CPU | >80% for 30s | Warning: "Hermes using high CPU" |
+| High memory | >4GB | Warning: "Hermes using high memory" |
 
 ---
 
-## 5. Cron-jobb-hantering
+## 4. Communication with Hermes
 
-Dashboarden kan styra Hermes cron-jobb:
+### 4.1 stdout/stderr — Real-time Log
 
-| Åtgärd | Hermes-kommando |
-|--------|-----------------|
-| Lista alla jobb | `hermes cronjob list --json` |
-| Starta ett jobb | `hermes cronjob resume <job_id>` |
-| Pausa ett jobb | `hermes cronjob pause <job_id>` |
-| Köra ett jobb manuellt | `hermes cronjob run <job_id>` |
-| Ta bort ett jobb | `hermes cronjob remove <job_id>` |
+Hermes stdout and stderr pipes are read continuously:
+- Each line parsed (JSON-lines format from Hermes logging)
+- Relevant data pushed to UI (status updates, errors)
+- Raw logs saved to disk for debugging
+
+### 4.2 Signal Handling
+
+| Signal | Usage |
+|--------|-------|
+| SIGTERM | Graceful stop — Hermes finishes active iteration |
+| SIGINT | Pause — Hermes pauses after current step |
+| SIGKILL | Force kill (last resort, after timeout) |
+
+---
+
+## 5. Cron Job Management
+
+Dashboard controls Hermes cron jobs:
+
+| Action | Hermes Command |
+|--------|---------------|
+| List all jobs | `hermes cronjob list --json` |
+| Start a job | `hermes cronjob resume <job_id>` |
+| Pause a job | `hermes cronjob pause <job_id>` |
+| Run a job manually | `hermes cronjob run <job_id>` |
+| Remove a job | `hermes cronjob remove <job_id>` |
 
 ---
 
 ## 6. Error Recovery
 
 ```
-Process krasch detekterad
+Process crash detected
         │
         ▼
 ┌─────────────────────┐
-│ 1. Logga kraschen   │
-│    (spara sista     │
-│     100 raderna av  │
-│     stderr)         │
+│ 1. Log the crash    │
+│    (save last 100   │
+│     lines of stderr) │
 └────────┬────────────┘
          │
          ▼
 ┌─────────────────────┐
-│ 2. Visa dialog      │
-│ "Hermes kraschade.  │
-│  Vill du:           │
-│  [Starta om]        │
-│  [Visa logg]        │
-│  [Stäng Dashboard]" │
+│ 2. Show dialog      │
+│ "Hermes crashed.    │
+│  Options:           │
+│  [Restart]          │
+│  [View Log]         │
+│  [Close Dashboard]" │
 └────────┬────────────┘
          │
          ▼
 ┌─────────────────────┐
-│ 3. Om omstart:      │
-│    • Ladda senaste  │
+│ 3. If restart:      │
+│    • Load latest    │
 │      checkpoint     │
-│    • Återställ      │
-│      agenter        │
-│    • Starta om      │
-│      Forge-loopen   │
+│    • Restore agents │
+│    • Restart        │
+│      Forge loop     │
 └─────────────────────┘
 ```
 
 ---
 
-## 7. Process-säkerhet
+## 7. Process Safety
 
-| Regel | Orsak |
-|-------|-------|
-| Endast en Forge-process åt gången | Undvik race conditions |
-| Dashboard äger processen | Om Dashboard dör → Hermes dör (inga zombies) |
-| Timeout på 30s vid shutdown | Förhindra att shutdown hänger sig |
-| Logga alla process-händelser | Full spårbarhet för felsökning |
+| Rule | Reason |
+|------|--------|
+| Only one Forge process at a time | Avoid race conditions |
+| Dashboard owns the process | If Dashboard dies → Hermes dies (no zombies) |
+| 30s timeout on shutdown | Prevent shutdown from hanging |
+| Log all process events | Full traceability for debugging |
 
 ---
 

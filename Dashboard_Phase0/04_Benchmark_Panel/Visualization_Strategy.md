@@ -5,31 +5,31 @@
 
 ---
 
-## 1. Översikt
+## 1. Overview
 
-Alla grafer och visualiseringar i Dashboarden använder **Chart.js** — ett lättviktigt (<60KB gzippat) canvas-bibliotek med mörkt tema-stöd.
-
----
-
-## 2. Chart.js — val och motivering
-
-| Faktor | Chart.js | Alternativ (D3.js) | Alternativ (ECharts) |
-|--------|----------|---------------------|----------------------|
-| Storlek | ~58KB gzip | ~80KB+ (modulärt) | ~300KB+ |
-| Komplexitet | Låg API | Hög — bygger allt från grunden | Medium |
-| Prestanda | Bra (Canvas) | Utmärkt (SVG/Canvas) | Bra |
-| Mörkt tema | Enkelt (plugin) | Manuellt | Inbyggt |
-| Animation | Inbyggd | Manuell | Inbyggd |
-| Val | ✅ | Endast vid behov av custom visualisering | För tungt |
+All charts and visualizations in the Dashboard use **Chart.js** — a lightweight (<60KB gzipped) canvas library with dark theme support.
 
 ---
 
-## 3. Chart-konfiguration (global)
+## 2. Chart.js — Choice & Rationale
+
+| Factor | Chart.js | D3.js | ECharts |
+|--------|----------|-------|---------|
+| Size | ~58KB gzip | ~80KB+ (modular) | ~300KB+ |
+| Complexity | Low API | High — builds from scratch | Medium |
+| Performance | Good (Canvas) | Excellent (SVG/Canvas) | Good |
+| Dark theme | Simple (plugin) | Manual | Built-in |
+| Animation | Built-in | Manual | Built-in |
+| Choice | ✅ | Only for custom viz needs | Too heavy |
+
+---
+
+## 3. Chart Configuration (Global)
 
 ```javascript
-Chart.defaults.color = '#8892b0';           // Textfärg
+Chart.defaults.color = '#8892b0';           // Text color
 Chart.defaults.borderColor = '#2a2a4a';     // Gridlines
-Chart.defaults.backgroundColor = '#1a1a2e'; // Chart-bakgrund
+Chart.defaults.backgroundColor = '#1a1a2e'; // Chart background
 Chart.defaults.font.family = "'JetBrains Mono', monospace";
 Chart.defaults.font.size = 11;
 Chart.defaults.plugins.tooltip.backgroundColor = '#16213e';
@@ -38,7 +38,7 @@ Chart.defaults.plugins.tooltip.borderColor = '#2a2a4a';
 
 ---
 
-## 4. Chart-typer
+## 4. Chart Types
 
 ### 4.1 Line Chart — Tokens per Second
 
@@ -57,7 +57,7 @@ Chart.defaults.plugins.tooltip.borderColor = '#2a2a4a';
       y: { title: { text: 'Tokens/s' }, beginAtZero: true }
     },
     plugins: {
-      annotation: { /* markörer för agent-spawn */ }
+      annotation: { /* agent spawn markers */ }
     }
   }
 }
@@ -105,22 +105,22 @@ Chart.defaults.plugins.tooltip.borderColor = '#2a2a4a';
 
 ### 4.4 Scatter Chart — Score Distribution
 
-Varje punkt = en agent. X-axel = tid, Y-axel = score. Färg = modell.
+Each point = one agent. X-axis = time, Y-axis = score. Color = model.
 
 ### 4.5 Gauge — Live Tokens/s
 
-En cirkulär gauge som visar nuvarande tokens/s mot genomsnittet.
+A circular gauge showing current tokens/s against the average.
 
-### 4.6 Sparkline — Miniatyrgrafer
+### 4.6 Sparklines — Mini Charts
 
-I agent-cards och tabell-celler: små 1D-grafer som visar trend.
+In agent cards and table cells: small 1D charts showing trend.
 
 ---
 
-## 5. Färgpalett (datasets)
+## 5. Color Palette (datasets)
 
-| Index | Färg | Användning |
-|-------|------|------------|
+| Index | Color | Usage |
+|-------|-------|-------|
 | 0 | `#6366f1` | deepseek-v4-flash (primary) |
 | 1 | `#10b981` | deepseek-v4-pro (success) |
 | 2 | `#3b82f6` | gpt-4o (info) |
@@ -131,51 +131,51 @@ I agent-cards och tabell-celler: små 1D-grafer som visar trend.
 
 ---
 
-## 6. Interaktion
+## 6. Interaction
 
-| Interaktion | Beteende |
+| Interaction | Behavior |
 |-------------|----------|
-| Hover | Tooltip med exakta värden |
-| Klicka på legend | Toggle dataset synlighet |
-| Dubbelklicka | Zooma in på det området |
-| Scroll | Zooma in/ut på tidsaxel |
-| Drag | Panna i tidsaxeln |
-| Högerklicka | "Reset zoom" |
+| Hover | Tooltip with exact values |
+| Click legend | Toggle dataset visibility |
+| Double-click | Zoom into area |
+| Scroll | Zoom in/out on time axis |
+| Drag | Pan time axis |
+| Right-click | "Reset zoom" |
 
 ---
 
-## 7. Annoteringar
+## 7. Annotations
 
-Viktiga händelser markeras på graferna:
+Key events are marked on charts:
 
-| Händelse | Markör |
-|----------|--------|
-| Agent spawn | Liten vertikal linje + agent-namn |
-| Agent klar (score ≥80) | Grön prick + score |
-| Agent felad | Röd prick + feltyp |
-| Checkpoint | Blå romb + "💾" |
-| Model switch | Vertikal linje + modellnamn |
+| Event | Marker |
+|-------|--------|
+| Agent spawn | Small vertical line + agent name |
+| Agent complete (score ≥80) | Green dot + score |
+| Agent errored | Red dot + error type |
+| Checkpoint | Blue diamond + "💾" |
+| Model switch | Vertical line + model name |
 
 ---
 
-## 8. Prestanda
+## 8. Performance
 
-| Optimering | Beskrivning |
-|------------|-------------|
-| Datapunktsbegränsning | Max 500 punkter per dataset (decimering) |
-| Canvas, inte SVG | Canvas är snabbare för många datapunkter |
-| RequestAnimationFrame | Animerar endast synliga grafer |
-| Lata grafer | Rendera bara när panelen är synlig |
-| Datacache | Cachad aggregerad data — rita om utan API-anrop |
+| Optimization | Description |
+|--------------|-------------|
+| Data point limit | Max 500 points per dataset (decimation) |
+| Canvas, not SVG | Canvas is faster for many data points |
+| RequestAnimationFrame | Only animates visible charts |
+| Lazy charts | Only render when panel is visible |
+| Data cache | Cached aggregated data — redraw without API calls |
 
 ---
 
 ## 9. Export
 
-| Format | Användning |
-|--------|------------|
-| PNG | Screenshot av graf |
-| CSV | Rådata export |
+| Format | Usage |
+|--------|-------|
+| PNG | Screenshot of chart |
+| CSV | Raw data export |
 | JSON | Full data export |
 
 ---

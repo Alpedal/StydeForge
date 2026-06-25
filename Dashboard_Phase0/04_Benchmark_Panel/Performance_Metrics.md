@@ -5,13 +5,13 @@
 
 ---
 
-## 1. Översikt
+## 1. Overview
 
-Benchmark-panelen visar prestandamätningar över tid: tokens per sekund, latency, och kostnad — per agent, per modell, och aggregerat.
+The benchmark panel displays performance metrics over time: tokens per second, latency, and cost — per agent, per model, and aggregated.
 
 ---
 
-## 2. Live Metrics — visuell design
+## 2. Live Metrics — Visual Design
 
 ```
 ┌──────────────────────────────────────────────────┐
@@ -50,94 +50,94 @@ Benchmark-panelen visar prestandamätningar över tid: tokens per sekund, latenc
 
 ---
 
-## 3. Metriker
+## 3. Metrics
 
-### 3.1 Primära metriker
+### 3.1 Primary Metrics
 
-| Metrik | Enhet | Beskrivning | Datakälla |
-|--------|-------|-------------|-----------|
-| **Tokens/s** | tokens/sekund | Genomströmning | Hermes logg (token counter) |
-| **Latency** | millisekunder | Tid till första token (TTFT) | Provider API |
-| **Cost/token** | USD | Kostnad per 1000 tokens | Provider-prislista |
-| **Cost/hr** | USD | Total kostnad per timme | Aggregerat från alla agenter |
-| **Agents/hr** | antal | Slutförda agenter per timme | Agent-historik |
+| Metric | Unit | Description | Data Source |
+|--------|------|-------------|-------------|
+| **Tokens/s** | tokens/second | Throughput | Hermes log (token counter) |
+| **Latency** | milliseconds | Time to first token (TTFT) | Provider API |
+| **Cost/token** | USD | Cost per 1000 tokens | Provider price list |
+| **Cost/hr** | USD | Total cost per hour | Aggregated from all agents |
+| **Agents/hr** | count | Completed agents per hour | Agent history |
 
-### 3.2 Sekundära metriker
+### 3.2 Secondary Metrics
 
-| Metrik | Beskrivning |
+| Metric | Description |
 |--------|-------------|
-| **Queue depth** | Antal agenter i kö |
-| **Avg agent duration** | Genomsnittlig tid per agent |
-| **Success rate** | % agenter som klarar quality gate (≥80) |
-| **Token efficiency** | Output tokens / input tokens (bör vara högt) |
-| **Error rate** | % agenter som felar |
+| **Queue depth** | Number of agents in queue |
+| **Avg agent duration** | Average time per agent |
+| **Success rate** | % agents passing quality gate (≥80) |
+| **Token efficiency** | Output tokens / input tokens (should be high) |
+| **Error rate** | % agents that error |
 
 ---
 
-## 4. Tidsintervall
+## 4. Time Intervals
 
-| Intervall | Upplösning | Beskrivning |
-|-----------|------------|-------------|
-| Live (5 min) | Per sekund | Realtid — senaste 5 minuterna |
-| 1 hour | Per minut | Senaste timmen |
-| 24 hours | Per 5 minuter | Senaste dygnet |
-| 7 days | Per timme | Senaste veckan |
-| 30 days | Per dag | Senaste månaden |
+| Interval | Resolution | Description |
+|----------|------------|-------------|
+| Live (5 min) | Per second | Real-time — last 5 minutes |
+| 1 hour | Per minute | Last hour |
+| 24 hours | Per 5 minutes | Last 24 hours |
+| 7 days | Per hour | Last week |
+| 30 days | Per day | Last month |
 
 ---
 
-## 5. Per-Model Jämförelse
+## 5. Per-Model Comparison
 
-Tabell som jämför alla modeller:
+Table comparing all models:
 
-| Kolumn | Beskrivning |
+| Column | Description |
 |--------|-------------|
-| Model | Modellnamn |
+| Model | Model name |
 | Provider | Provider (DeepSeek, OpenAI, etc.) |
-| t/s (avg) | Genomsnittlig tokens/sekund |
-| t/s (peak) | Högsta uppmätta tokens/sekund |
-| Latency (avg) | Genomsnittlig TTFT |
-| Latency (p95) | 95:e percentilen latency |
-| Cost/1K tokens | Kostnad per 1000 tokens |
-| Agents run | Antal agenter körda med denna modell |
-| Avg Score | Genomsnittlig eval-score för denna modell |
+| t/s (avg) | Average tokens/second |
+| t/s (peak) | Highest measured tokens/second |
+| Latency (avg) | Average TTFT |
+| Latency (p95) | 95th percentile latency |
+| Cost/1K tokens | Cost per 1000 tokens |
+| Agents run | Number of agents run with this model |
+| Avg Score | Average eval score for this model |
 
 ---
 
-## 6. Grafer — specifikation
+## 6. Charts — Specification
 
 ### 6.1 Tokens per Second (line chart)
 
-- X-axel: tid
-- Y-axel: tokens/s
-- En linje per modell (färgkodad)
-- Hover: exakt värde + tidpunkt
-- Annoteringar: markera när en ny agent spawnades
+- X-axis: time
+- Y-axis: tokens/s
+- One line per model (color-coded)
+- Hover: exact value + timestamp
+- Annotations: mark when a new agent spawned
 
 ### 6.2 Cost Over Time (stacked area)
 
-- X-axel: tid
-- Y-axel: kostnad (USD)
-- Stackad area per modell
-- Kumulativ total som en separat linje
+- X-axis: time
+- Y-axis: cost (USD)
+- Stacked area per model
+- Cumulative total as a separate line
 
 ### 6.3 Agent Throughput (bar chart)
 
-- X-axel: tidsbuckets (per timme)
-- Y-axel: antal slutförda agenter
-- Staplar: grön (score ≥80), gul (60-79), röd (<60)
+- X-axis: time buckets (per hour)
+- Y-axis: number of completed agents
+- Bars: green (score ≥80), yellow (60-79), red (<60)
 
 ### 6.4 Latency Distribution (histogram)
 
-- X-axel: latency buckets (0-500ms, 500ms-1s, 1-2s, 2-5s, 5s+)
-- Y-axel: antal requests
-- Per modell
+- X-axis: latency buckets (0-500ms, 500ms-1s, 1-2s, 2-5s, 5s+)
+- Y-axis: number of requests
+- Per model
 
 ---
 
-## 7. Datalagring
+## 7. Data Storage
 
-Prestandadata sparas lokalt:
+Performance data stored locally:
 
 ```json
 {
@@ -157,10 +157,10 @@ Prestandadata sparas lokalt:
 }
 ```
 
-**Lagringsstrategi:**
-- Rådata: IndexedDB — senaste 30 dagarna
-- Aggregerad data: per timme, dag, vecka — komprimerad
-- Rensning: äldre än 30 dagar → aggregat sparas, rådata raderas
+**Storage strategy:**
+- Raw data: IndexedDB — last 30 days
+- Aggregated data: by hour, day, week — compressed
+- Cleanup: older than 30 days → keep aggregates, delete raw data
 
 ---
 

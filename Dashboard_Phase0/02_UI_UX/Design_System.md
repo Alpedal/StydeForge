@@ -5,89 +5,89 @@
 
 ---
 
-## 1. Designfilosofi
+## 1. Design Philosophy
 
-**"Terminal chic"** — mörkt, kompakt, funktionellt. Inget onödigt.
+**"Terminal chic"** — dark, compact, functional. Nothing unnecessary.
 
 Inspiration:
-- VS Code (mörkt tema, panel-layout)
-- Linear (ren typografi, subtila animationer)
-- htop/btm (kompakt data-visning)
-- Cyberpunk 2077 UI (neon-accenter, glödande element)
+- VS Code (dark theme, panel layout)
+- Linear (clean typography, subtle animations)
+- htop/btm (compact data display)
+- Cyberpunk 2077 UI (neon accents, glowing elements)
 
 ---
 
-## 2. Färgpalett
+## 2. Color Palette
 
-### 2.1 Primär palett
+### 2.1 Primary Palette
 
-| Namn | Hex | Användning |
-|------|-----|------------|
-| **Background** | `#0d0d1a` | App-bakgrund, huvudfärg |
-| **Surface** | `#1a1a2e` | Panel-bakgrund, kort |
-| **Surface 2** | `#16213e` | Hover, alternerande rader |
-| **Border** | `#2a2a4a` | Panelgränser, input-borders |
-| **Text Primary** | `#e0e0e0` | Huvudtext |
-| **Text Secondary** | `#8892b0` | Sekundär text, labels |
-| **Text Muted** | `#4a5568` | Placeholder, inaktiv text |
+| Name | Hex | Usage |
+|------|-----|-------|
+| **Background** | `#0d0d1a` | App background, main color |
+| **Surface** | `#1a1a2e` | Panel background, cards |
+| **Surface 2** | `#16213e` | Hover, alternating rows |
+| **Border** | `#2a2a4a` | Panel borders, input borders |
+| **Text Primary** | `#e0e0e0` | Main text |
+| **Text Secondary** | `#8892b0` | Secondary text, labels |
+| **Text Muted** | `#4a5568` | Placeholder, inactive text |
 
-### 2.2 Accent-färger
+### 2.2 Accent Colors
 
-| Namn | Hex | Användning |
-|------|-----|------------|
-| **Primary** | `#6366f1` | Knappar, länkar, aktiv tab |
-| **Primary Hover** | `#818cf8` | Hover på primary-element |
-| **Success** | `#10b981` | Klar-status, positiva värden |
-| **Warning** | `#f59e0b` | Pausad, varningar |
-| **Danger** | `#ef4444` | Fel, stoppad, kritiskt |
+| Name | Hex | Usage |
+|------|-----|-------|
+| **Primary** | `#6366f1` | Buttons, links, active tab |
+| **Primary Hover** | `#818cf8` | Hover on primary elements |
+| **Success** | `#10b981` | Done status, positive values |
+| **Warning** | `#f59e0b` | Paused, warnings |
+| **Danger** | `#ef4444` | Error, stopped, critical |
 | **Info** | `#3b82f6` | Information, neutral status |
 
-### 2.3 Status-prickar
+### 2.3 Status Dots
 
-| Status | Färg | Glöd |
-|--------|------|------|
+| Status | Color | Glow |
+|--------|-------|------|
 | Running | `#10b981` | `box-shadow: 0 0 8px #10b981` |
 | Paused | `#f59e0b` | `box-shadow: 0 0 8px #f59e0b` |
-| Stopped | `#4a5568` | Ingen glöd |
-| Error | `#ef4444` | `box-shadow: 0 0 8px #ef4444` (pulserande) |
+| Stopped | `#4a5568` | No glow |
+| Error | `#ef4444` | `box-shadow: 0 0 8px #ef4444` (pulsing) |
 
 ---
 
-## 3. Typografi
+## 3. Typography
 
-### 3.1 Font-stack
+### 3.1 Font Stack
 
 ```css
 font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code',
              'Consolas', 'Monaco', monospace;
 ```
 
-| Användning | Font | Storlek | Vikt |
-|------------|------|---------|------|
-| Titelrad | JetBrains Mono | 14px | 600 |
-| Panel-headers | JetBrains Mono | 12px | 600 (uppercase, letter-spacing 1px) |
-| Brödtext | JetBrains Mono | 13px | 400 |
-| Kod | JetBrains Mono | 12px | 400 |
-| Små labels | JetBrains Mono | 11px | 400 |
-| Statusfält | JetBrains Mono | 11px | 500 |
+| Usage | Font | Size | Weight |
+|-------|------|------|--------|
+| Title bar | JetBrains Mono | 14px | 600 |
+| Panel headers | JetBrains Mono | 12px | 600 (uppercase, letter-spacing 1px) |
+| Body text | JetBrains Mono | 13px | 400 |
+| Code | JetBrains Mono | 12px | 400 |
+| Small labels | JetBrains Mono | 11px | 400 |
+| Status bar | JetBrains Mono | 11px | 500 |
 
-### 3.2 Textstilar
+### 3.2 Text Styles
 
-| Stil | CSS |
-|------|-----|
-| Rubrik | `font-weight: 600; color: #e0e0e0;` |
-| Brödtext | `font-weight: 400; color: #c0c0d0; line-height: 1.6;` |
-| Kod | `background: #1a1a2e; border-radius: 4px; padding: 2px 6px;` |
-| Länk | `color: #6366f1; text-decoration: none; &:hover { text-decoration: underline; }` |
+| Style | CSS |
+|-------|-----|
+| Heading | `font-weight: 600; color: #e0e0e0;` |
+| Body | `font-weight: 400; color: #c0c0d0; line-height: 1.6;` |
+| Code | `background: #1a1a2e; border-radius: 4px; padding: 2px 6px;` |
+| Link | `color: #6366f1; text-decoration: none; &:hover { text-decoration: underline; }` |
 
 ---
 
-## 4. Komponentbibliotek (design tokens)
+## 4. Components (Design Tokens)
 
-### 4.1 Knappar
+### 4.1 Buttons
 
 ```css
-/* Primär knapp */
+/* Primary button */
 .btn-primary {
   background: #6366f1;
   color: #ffffff;
@@ -102,21 +102,21 @@ font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code',
 .btn-primary:hover { background: #818cf8; }
 .btn-primary:active { background: #4f46e5; }
 
-/* Sekundär knapp */
+/* Secondary button */
 .btn-secondary {
   background: transparent;
   color: #c0c0d0;
   border: 1px solid #2a2a4a;
 }
 
-/* Danger knapp */
+/* Danger button */
 .btn-danger {
   background: #ef4444;
   color: #ffffff;
 }
 ```
 
-### 4.2 Input-fält
+### 4.2 Input Fields
 
 ```css
 .input {
@@ -149,51 +149,51 @@ font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code',
 
 ---
 
-## 5. Animationer
+## 5. Animations
 
 | Element | Animation | Duration | Easing |
 |---------|-----------|----------|--------|
 | Panel resize | `width` transition | 150ms | ease-out |
-| Panel tab byte | `opacity` fade | 200ms | ease-in-out |
-| Knapp hover | `background` färg | 150ms | ease |
-| Status-prick (running) | `box-shadow` puls | 2s | infinite ease-in-out |
-| Ny agent i lista | Slide-in från höger | 300ms | ease-out |
-| Notis popup | Slide-in från botten | 400ms | ease-out |
+| Panel tab switch | `opacity` fade | 200ms | ease-in-out |
+| Button hover | `background` color | 150ms | ease |
+| Status dot (running) | `box-shadow` pulse | 2s | infinite ease-in-out |
+| New agent in list | Slide-in from right | 300ms | ease-out |
+| Notification popup | Slide-in from bottom | 400ms | ease-out |
 
 ---
 
-## 6. Ikoner
+## 6. Icons
 
-Använder ett minimalt, konsistent ikon-set (Lucide-icons stil):
+Minimal, consistent icon set (Lucide-icons style):
 
-| Ikon | Användning |
-|------|------------|
-| ▶ | Starta |
-| ⏸ | Pausa |
-| ⏹ | Stoppa |
-| ⚙ | Inställningar |
-| ● | Status (med färg) |
-| 📡 | Agent-panel |
-| 📊 | Benchmark-panel |
-| 💬 | Chatt-panel |
-| 🔄 | Uppdatera |
+| Icon | Usage |
+|------|-------|
+| ▶ | Start |
+| ⏸ | Pause |
+| ⏹ | Stop |
+| ⚙ | Settings |
+| ● | Status (colored) |
+| 📡 | Agent panel |
+| 📊 | Benchmark panel |
+| 💬 | Chat panel |
+| 🔄 | Refresh / update |
 | 📌 | Pin panel |
-| ✕ | Stäng panel / ta bort |
-| ⚡ | Hastighet / tokens per sekund |
-| 💾 | Checkpoint / spara |
+| ✕ | Close panel / remove |
+| ⚡ | Speed / tokens per second |
+| 💾 | Checkpoint / save |
 
 ---
 
 ## 7. Dark Mode Only
 
-Dashboarden är **endast mörkt tema** — inget ljust läge. Det är ett designbeslut, inte en inställning:
+The Dashboard is **dark theme only** — no light mode. This is a design decision, not a preference:
 
-| Orsak |
-|-------|
-| Terminal-estetik — hör hemma i mörkret |
-| Minskar kodkomplexitet (inga tema-variabler att hantera) |
-| Bättre för långa sessioner (mindre ögonbelastning) |
-| Matchar StydeForge Forge-terminalens utseende |
+| Reason |
+|--------|
+| Terminal aesthetic — belongs in the dark |
+| Reduces code complexity (no theme variables) |
+| Better for long sessions (less eye strain) |
+| Matches the StydeForge Forge terminal appearance |
 
 ---
 

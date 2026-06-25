@@ -5,89 +5,89 @@
 
 ---
 
-## 1. Översikt
+## 1. Overview
 
-Dashboarden minimeras till system tray snarare än att stängas helt — så att Forge kan fortsätta köras i bakgrunden.
+The Dashboard minimizes to system tray instead of closing entirely — so Forge can keep running in the background.
 
 ```
-Windows System Tray (aktivitetsfältet, höger sida)
+Windows System Tray (taskbar, right side)
 ┌──────────────────────────────────────────┐
 │  ▲  🌐  🔊  [S]  15:34              │
 │              ↑                          │
-│         StydeForge-ikon                 │
+│         StydeForge icon                 │
 └──────────────────────────────────────────┘
 
-Högerklick på ikonen:
+Right-click icon:
 ┌────────────────────┐
-│ Öppna Dashboard    │
+│ Open Dashboard     │
 │ ─────────────      │
 │ Status: ● Running  │
-│ Agenter: 3 aktiva  │
+│ Agents: 3 active   │
 │ Tokens: 12.4K      │
 │ ─────────────      │
-│ ▶ Starta Forge     │
-│ ⏸ Pausa Forge     │
-│ ⏹ Stoppa Forge    │
+│ ▶ Start Forge      │
+│ ⏸ Pause Forge     │
+│ ⏹ Stop Forge      │
 │ ─────────────      │
-│ ⚙ Inställningar   │
+│ ⚙ Settings        │
 │ ─────────────      │
-│ Avsluta            │
+│ Exit               │
 └────────────────────┘
 ```
 
 ---
 
-## 2. Tray-ikon
+## 2. Tray Icon
 
-| Egenskap | Beskrivning |
+| Property | Description |
 |----------|-------------|
-| Ikon | Stiliserad "S" (StydeForge-logotyp) — 16×16 och 32×32 px |
-| Färg (aktiv) | Grön — Forge körs |
-| Färg (pausad) | Gul — Forge pausad |
-| Färg (inaktiv) | Grå — Forge stoppad |
-| Färg (fel) | Röd — Forge kraschade eller fel |
+| Icon | Stylized "S" (StydeForge logo) — 16×16 and 32×32 px |
+| Color (active) | Green — Forge running |
+| Color (paused) | Yellow — Forge paused |
+| Color (inactive) | Gray — Forge stopped |
+| Color (error) | Red — Forge crashed or errored |
 
 ---
 
-## 3. Minimera-beteende
+## 3. Minimize Behavior
 
-| Åtgärd | Resultat |
-|--------|----------|
-| Klicka ✕ (stäng-knappen) | Minimera till tray (om Forge kör) |
-| Klicka ✕ (Forge ej aktiv) | Fråga: "Vill du stänga eller minimera?" |
-| Dubbelklicka tray-ikon | Öppna/återställ Dashboard-fönstret |
-| Högerklicka → Öppna Dashboard | Återställ fönster, fokusera |
-| Windows+D (visa skrivbord) | Dashboard minimeras normalt |
-| Alt+Tab | Dashboard syns i Alt+Tab-listan |
-
----
-
-## 4. Notiser
-
-Dashboarden skickar Windows-notiser vid viktiga händelser:
-
-| Händelse | Notis |
-|----------|-------|
-| Agent klar (score ≥80) | "✅ Agent 'code-reviewer v3' klar! Score: 87/100" |
-| Agent klar (score <80) | "⚠ Agent 'sql-helper' fick 62/100 — under quality gate" |
-| Forge kraschade | "🔴 StydeForge kraschade. Klicka för att se logg." |
-| Hög resursanvändning | "⚠ CPU 92% i 30s — kan påverka prestanda" |
-| Checkpoint skapad | "💾 Checkpoint sparad: 2026-06-25 15:42" |
-| Ny version tillgänglig | "🔄 StydeForge v1.1 finns! Klicka för att uppdatera." |
+| Action | Result |
+|--------|--------|
+| Click ✕ (close button) | Minimize to tray (if Forge running) |
+| Click ✕ (Forge not active) | Prompt: "Close or minimize?" |
+| Double-click tray icon | Open/restore Dashboard window |
+| Right-click → Open Dashboard | Restore window, focus |
+| Windows+D (show desktop) | Dashboard minimizes normally |
+| Alt+Tab | Dashboard visible in Alt+Tab list |
 
 ---
 
-## 5. Notis-interaktion
+## 4. Notifications
 
-| Klick på notis | Resultat |
-|----------------|----------|
-| Agent-notis | Öppna Dashboard → fokusera agentens detaljvy |
-| Krasch-notis | Öppna Dashboard → visa fellogg |
-| Uppdaterings-notis | Starta uppdateringsprocessen |
+Dashboard sends Windows notifications for key events:
+
+| Event | Notification |
+|-------|-------------|
+| Agent completed (score ≥80) | "✅ Agent 'code-reviewer v3' done! Score: 87/100" |
+| Agent completed (score <80) | "⚠ Agent 'sql-helper' scored 62/100 — below quality gate" |
+| Forge crashed | "🔴 StydeForge crashed. Click to view log." |
+| High resource usage | "⚠ CPU 92% for 30s — may impact performance" |
+| Checkpoint saved | "💾 Checkpoint saved: 2026-06-25 15:42" |
+| New version available | "🔄 StydeForge v1.1 available! Click to update." |
 
 ---
 
-## 6. Konfiguration
+## 5. Notification Interaction
+
+| Click on notification | Result |
+|----------------------|--------|
+| Agent notification | Open Dashboard → focus agent detail view |
+| Crash notification | Open Dashboard → show error log |
+| Update notification | Start update process |
+
+---
+
+## 6. Configuration
 
 ```json
 {
@@ -105,23 +105,23 @@ Dashboarden skickar Windows-notiser vid viktiga händelser:
 }
 ```
 
-| Inställning | Default | Beskrivning |
-|-------------|---------|-------------|
-| `minimize_to_tray` | true | Stäng = minimera till tray |
-| `show_notifications` | true | Visa Windows-notiser |
-| `notification_events` | ["agent_completed", "agent_failed", "forge_crashed", "update_available"] | Vilka händelser som triggar notis |
-| `start_minimized` | false | Starta Dashboard minimerad vid Windows-start |
+| Setting | Default | Description |
+|---------|---------|-------------|
+| `minimize_to_tray` | true | Close = minimize to tray |
+| `show_notifications` | true | Show Windows notifications |
+| `notification_events` | ["agent_completed", "agent_failed", "forge_crashed", "update_available"] | Events that trigger notifications |
+| `start_minimized` | false | Start Dashboard minimized on Windows startup |
 
 ---
 
 ## 7. Edge Cases
 
-| Scenario | Beteende |
+| Scenario | Behavior |
 |----------|----------|
-| Dashboard startas medan Forge redan körs (från tidigare session) | Detektera befintlig process, koppla till den, fråga inte |
-| Windows Explorer kraschar/startas om | Tray-ikonen återskapas automatiskt |
-| Användare "stänger" via tray medan Forge kör | Fråga: "Forge körs. Vill du: [Stoppa Forge + Avsluta] [Minimera till tray] [Avbryt]" |
-| Tray-ikon syns inte (Windows döljer) | Använd systemets "visa alla ikoner"-funktion; Dashboard visar instruktion vid första körning |
+| Dashboard starts while Forge already running (from previous session) | Detect existing process, attach to it, don't prompt |
+| Windows Explorer crashes/restarts | Tray icon auto-recreated |
+| User "closes" via tray while Forge running | Prompt: "Forge is running. [Stop Forge + Exit] [Minimize] [Cancel]" |
+| Tray icon not visible (Windows hides it) | Use system "show all icons"; Dashboard shows instruction on first run |
 
 ---
 

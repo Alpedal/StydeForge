@@ -5,110 +5,110 @@
 
 ---
 
-## 1. Vad är StydeForge Dashboard?
+## 1. What is StydeForge Dashboard?
 
-StydeForge Dashboard är **hela programmet** — inte en separat webbsida som övervakar något annat. Det är skrivbordsapplikationen `StydeForge.exe` som användaren interagerar med.
+StydeForge Dashboard is **the entire program** — not a separate webpage monitoring something else. It is the `StydeForge.exe` desktop application the user interacts with.
 
-Tre kärnfunktioner i ett enda fönster:
-- **Övervaka** — se alla agenter, benchmarks, systemhälsa
-- **Styra** — starta, pausa, stoppa hela Forge-systemet
-- **Chatta** — en full agent som kan läsa/skriva filer, köra kommandon, använda skills
-
----
-
-## 2. Varför?
-
-**Problemet idag (utan Dashboard):**
-- Agentövervakning kräver terminal-kommandon (`hermes process list`, `hermes cronjob list`)
-- Ingen överblick över prestanda och kostnader över tid
-- Start/stopp sker manuellt via CLI
-- Ingen gemensam plats för att interagera med systemet
-- Byta modell = gräva i config-filer
-
-**Lösningen:**
-En enda .exe. Dubbelklicka. Allt finns där.
+Three core functions in a single window:
+- **Monitor** — view all agents, benchmarks, system health
+- **Control** — start, pause, stop the Forge system
+- **Chat** — a full agent that reads/writes files, runs commands, uses skills
 
 ---
 
-## 3. Mål
+## 2. Why?
 
-### 3.1 Primära mål (MVP — Phase 1)
+**Today's problem (without Dashboard):**
+- Agent monitoring requires terminal commands (`hermes process list`, `hermes cronjob list`)
+- No overview of performance and cost over time
+- Start/stop done manually via CLI
+- No unified place to interact with the system
+- Switching models = digging through config files
 
-| Mål | Beskrivning | Framgångskriterium |
-|-----|-------------|-------------------|
-| **Agentövervakning** | Se alla aktiva/klara agenter i realtid | Listan uppdateras inom 2s efter statusändring |
-| **Systemkontroll** | Starta/pausa/stoppa Forge från en knapp | En knapptryckning = hela pipelinen stannar |
-| **Chatt med verktyg** | Chatta med en AI-agent som kan läsa/skriva filer | Chatten kan redigera en fil på datorn |
-| **Model switching** | Byt AI-modell i chatten med dropdown | Byta från DeepSeek till OpenAI = ett klick |
-
-### 3.2 Sekundära mål (Phase 2+)
-
-| Mål | Beskrivning |
-|-----|-------------|
-| **Benchmark-vy** | Se prestanda över tid — tokens/s, kostnad, eval-resultat |
-| **Custom providers** | Koppla in egen LLM via REST-endpoint |
-| **Local models** | Stöd för Ollama, llama.cpp — kör lokalt |
-| **System health** | CPU/GPU/RAM/Disk — live |
-| **System tray** | Minimera till tray, notiser vid viktiga händelser |
-| **Auto update** | Appen uppdaterar sig själv |
+**Solution:**
+A single .exe. Double-click. Everything is there.
 
 ---
 
-## 4. Icke-mål (vad Dashboarden INTE är)
+## 3. Goals
 
-- **Inte en IDE** — ingen kodredigerare, inget projekthanteringssystem
-- **Inte en modell-tränare** — ingen fine-tuning, ingen dataset-hantering
-- **Inte en webbserver** — körs lokalt, ingen fjärråtkomst (MVP)
-- **Inte en ersättning för terminalen** — avancerad felsökning görs fortfarande i CLI
+### 3.1 Primary Goals (MVP — Phase 1)
+
+| Goal | Description | Success Criterion |
+|------|-------------|-------------------|
+| **Agent Monitoring** | See all active/done agents in real-time | List updates within 2s of status change |
+| **System Control** | Start/pause/stop Forge from one button | One click = entire pipeline stops |
+| **Chat with Tools** | Chat with an AI agent that reads/writes files | Chat can edit a file on disk |
+| **Model Switching** | Switch AI model in chat via dropdown | DeepSeek → OpenAI = one click |
+
+### 3.2 Secondary Goals (Phase 2+)
+
+| Goal | Description |
+|------|-------------|
+| **Benchmark View** | See performance over time — tokens/s, cost, eval results |
+| **Custom Providers** | Connect custom LLM via REST endpoint |
+| **Local Models** | Support Ollama, llama.cpp — run locally |
+| **System Health** | CPU/GPU/RAM/Disk — live |
+| **System Tray** | Minimize to tray, notifications for key events |
+| **Auto Update** | App updates itself |
 
 ---
 
-## 5. Användarflöde
+## 4. Non-Goals (what the Dashboard is NOT)
+
+- **Not an IDE** — no code editor, no project management
+- **Not a model trainer** — no fine-tuning, no dataset management
+- **Not a web server** — runs locally, no remote access (MVP)
+- **Not a terminal replacement** — advanced debugging still done in CLI
+
+---
+
+## 5. User Flow
 
 ```
-1. Dubbelklicka StydeForge.exe
+1. Double-click StydeForge.exe
         │
-2. Dashboard öppnas med 3 paneler
+2. Dashboard opens with 3 panels
         │
    ┌────┴────┬────────────┬────────────┐
-   │ AGENTS  │ BENCHMARKS │   CHATT    │
-   │ (lista) │  (grafer)  │ (full agent)│
+   │ AGENTS  │ BENCHMARKS │    CHAT    │
+   │ (list)  │  (graphs)  │ (full agent│
    └─────────┴────────────┴────────────┘
         │
-3. Toppmeny: [▶ Start] [⏸ Pausa] [⏹ Stopp] [⚙ Inställningar]
+3. Top bar: [▶ Start] [⏸ Pause] [⏹ Stop] [⚙ Settings]
         │
-4. Chatten är alltid tillgänglig — höger/neder-panel
-   • Fråga: "läs D:/config.yaml och optimera den"
-   • Agenten läser filen, analyserar, skriver tillbaka
-   • "skill:code-review på D:/projekt/"
-   • Agenten kör code-review med den specifika skillen
+4. Chat always available — right/bottom panel
+   • "read D:/config.yaml and optimize it"
+   • Agent reads file, analyzes, writes back
+   • "skill:code-review on D:/project/"
+   • Agent runs code-review with that skill
 ```
 
 ---
 
-## 6. Målgrupp
+## 6. Target Audience
 
-**Primär:** Pontus (utvecklare, AI-engineer)
-- Vill ha kontroll över sitt agent-ekosystem
-- Byter ofta modeller (DeepSeek, OpenAI, lokala)
-- Använder skills intensivt
-- Vill se vad som händer utan att gräva i loggar
+**Primary:** Pontus (developer, AI engineer)
+- Wants control over his agent ecosystem
+- Frequently switches models (DeepSeek, OpenAI, local)
+- Heavy skill usage
+- Wants visibility without digging through logs
 
-**Sekundär:** Andra utvecklare som kör Hermes/StydeForge
-- Samma behov men med egna providers och skills
+**Secondary:** Other developers running Hermes/StydeForge
+- Same needs but with their own providers and skills
 
 ---
 
-## 7. Framgångsmätning
+## 7. Success Metrics
 
-| Metrik | Mål |
-|--------|-----|
-| Tid från dubbelklick till fungerande dashboard | < 3 sekunder |
-| Tid att byta modell i chatten | < 5 sekunder (välj + verifiera) |
-| Antal steg för att stoppa Forge | 1 klick |
-| Chattens svarshastighet (första token) | < 2 sekunder |
-| Minnesanvändning (idle) | < 150 MB |
-| Installationsstorlek (.exe) | < 80 MB |
+| Metric | Target |
+|--------|--------|
+| Time from double-click to functional dashboard | < 3 seconds |
+| Time to switch model in chat | < 5 seconds (select + verify) |
+| Steps to stop Forge | 1 click |
+| Chat response time (first token) | < 2 seconds |
+| Memory usage (idle) | < 150 MB |
+| Install size (.exe) | < 80 MB |
 
 ---
 

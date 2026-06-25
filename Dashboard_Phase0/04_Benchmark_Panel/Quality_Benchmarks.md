@@ -5,20 +5,20 @@
 
 ---
 
-## 1. Översikt
+## 1. Overview
 
-Kvalitetsbenchmarks mäter inte hastighet/kostnad — de mäter hur *bra* agentens output är. Data kommer från StydeForge Forge eval-pipeline (LLM-as-Judge, Self-Eval, etc.).
+Quality benchmarks measure not speed/cost but how *good* the agent's output is. Data comes from the StydeForge Forge eval pipeline (LLM-as-Judge, Self-Eval, etc.).
 
 ---
 
-## 2. Eval Score Card — visuell design
+## 2. Eval Score Card — Visual Design
 
 ```
 ┌──────────────────────────────────────────────────┐
 │ 📊 QUALITY BENCHMARKS                            │
 ├──────────────────────────────────────────────────┤
 │                                                  │
-│  Overall Quality Score (senaste 10 agenter)      │
+│  Overall Quality Score (last 10 agents)          │
 │  ┌────────────────────────────────────────────┐  │
 │  │ 100│    ●                                 │  │
 │  │  80│ ●  ●  ●──●──●  ●                    │  │
@@ -51,82 +51,82 @@ Kvalitetsbenchmarks mäter inte hastighet/kostnad — de mäter hur *bra* agente
 
 ---
 
-## 3. Eval-kategorier
+## 3. Eval Categories
 
-Varje agent kan evalueras på flera kategorier:
+Each agent can be evaluated across multiple categories:
 
-| Kategori | Vikt (default) | Beskrivning |
-|----------|---------------|-------------|
-| **Code Quality** | 30% | Korrekthet, buggar, edge cases |
-| **Completeness** | 25% | Uppfyller alla krav i prompten |
-| **Best Practices** | 20% | Följer etablerade konventioner |
-| **Efficiency** | 15% | Optimerad, ingen onödig kod |
-| **Documentation** | 10% | Tydliga kommentarer, README |
+| Category | Weight (default) | Description |
+|----------|-----------------|-------------|
+| **Code Quality** | 30% | Correctness, bugs, edge cases |
+| **Completeness** | 25% | Meets all requirements in the prompt |
+| **Best Practices** | 20% | Follows established conventions |
+| **Efficiency** | 15% | Optimized, no unnecessary code |
+| **Documentation** | 10% | Clear comments, README |
 
-Vikterna är konfigurerbara per blueprint.
+Weights are configurable per blueprint.
 
 ---
 
-## 4. Score-typer
+## 4. Score Types
 
-| Typ | Beskrivning | Källa |
-|-----|-------------|-------|
-| **Self-Eval** | Agenten bedömer sin egen output | Agenten själv |
-| **LLM-as-Judge** | Oberoende modell bedömer mot rubric | deepseek-v4-pro |
-| **Cross-Judge** | Flera judges → konsensus | Flera modeller |
-| **Auto-Validation** | Automatiska tester (om tillgängliga) | Test-suite |
-| **Human Score** | Manuell mänsklig bedömning | Användaren |
+| Type | Description | Source |
+|------|-------------|--------|
+| **Self-Eval** | Agent assesses its own output | The agent itself |
+| **LLM-as-Judge** | Independent model assesses against rubric | deepseek-v4-pro |
+| **Cross-Judge** | Multiple judges → consensus | Multiple models |
+| **Auto-Validation** | Automated tests (if available) | Test suite |
+| **Human Score** | Manual human assessment | User |
 
 ---
 
 ## 5. Quality Gate
 
-| Score | Status | Färg | Åtgärd |
-|-------|--------|------|--------|
-| ≥90 | Exceptionell | Grön (ljus) | Checkpoint + spara |
-| 80-89 | Godkänd | Grön | Checkpoint + spara |
-| 70-79 | Underkänd | Gul | Markera för förbättring |
-| 60-69 | Svag | Orange | Teacher-agent analyserar |
-| <60 | Dålig | Röd | Kasseras (når ej USB), loggas |
+| Score | Status | Color | Action |
+|-------|--------|-------|--------|
+| ≥90 | Exceptional | Green (bright) | Checkpoint + save |
+| 80-89 | Approved | Green | Checkpoint + save |
+| 70-79 | Failed | Yellow | Mark for improvement |
+| 60-69 | Weak | Orange | Teacher agent analyzes |
+| <60 | Poor | Red | Discarded (doesn't reach USB), logged |
 
 ---
 
-## 6. Trend-analys
+## 6. Trend Analysis
 
-Dashboarden analyserar trender över tid:
+The dashboard analyzes trends over time:
 
-| Trend | Betydelse |
-|-------|-----------|
-| **Stigande scores** | Blueprint/agent förbättras över iterationer → positivt |
-| **Fallande scores** | Regression — något har blivit sämre → varning |
-| **Platt kurva** | Agenten har nått ett tak → överväg ny blueprint |
-| **Hög varians** | Instabil kvalitet → undersök prompt/skills |
-| **Låg varians** | Stabil, förutsägbar kvalitet → bra |
+| Trend | Meaning |
+|-------|---------|
+| **Rising scores** | Blueprint/agent improving over iterations → positive |
+| **Falling scores** | Regression — something has degraded → warning |
+| **Flat curve** | Agent has reached a ceiling → consider new blueprint |
+| **High variance** | Unstable quality → investigate prompt/skills |
+| **Low variance** | Stable, predictable quality → good |
 
 ---
 
-## 7. Per-Blueprint Jämförelse
+## 7. Per-Blueprint Comparison
 
 | Blueprint | Agents | Avg Score | Best | Worst | Trend |
 |-----------|--------|-----------|------|-------|-------|
-| code-reviewer-v3 | 47 | 87.3 | 96 | 72 | ↗ stigande |
-| test-generator-v2 | 32 | 82.1 | 91 | 65 | → stabil |
-| doc-writer-v1 | 18 | 68.4 | 82 | 41 | ↘ fallande |
-| refactor-v2 | 25 | 85.0 | 94 | 78 | ↗ stigande |
+| code-reviewer-v3 | 47 | 87.3 | 96 | 72 | ↗ rising |
+| test-generator-v2 | 32 | 82.1 | 91 | 65 | → stable |
+| doc-writer-v1 | 18 | 68.4 | 82 | 41 | ↘ falling |
+| refactor-v2 | 25 | 85.0 | 94 | 78 | ↗ rising |
 
 ---
 
-## 8. Benchmark-typer (framtida)
+## 8. Benchmark Types (Future)
 
-När StydeForge stödjer externa benchmarks:
+When StydeForge supports external benchmarks:
 
-| Benchmark | Typ | Beskrivning |
-|-----------|-----|-------------|
-| HumanEval | Kod | Python-funktioner från docstrings |
-| MBPP | Kod | Grundläggande Python-program |
-| SWE-bench | Kod | Verkliga GitHub-issues |
-| MMLU | Kunskap | Multidisciplinary knowledge |
-| Custom | Egen | Användardefinierade benchmarks |
+| Benchmark | Type | Description |
+|-----------|------|-------------|
+| HumanEval | Code | Python functions from docstrings |
+| MBPP | Code | Basic Python programs |
+| SWE-bench | Code | Real GitHub issues |
+| MMLU | Knowledge | Multidisciplinary knowledge |
+| Custom | Custom | User-defined benchmarks |
 
 ---
 

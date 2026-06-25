@@ -5,24 +5,24 @@
 
 ---
 
-## 1. Översikt
+## 1. Overview
 
-Agent-panelen visar alla aktiva, slutförda, och felade agenter i realtid. Data hämtas från Hermes CLI (`hermes process list --json`) och pollas var 2:a sekund.
-
----
-
-## 2. Agentyer
-
-| Typ | Källa | Beskrivning |
-|-----|-------|-------------|
-| **Forge Agent** | `hermes process list` | Agenter spawnade av Forge-loopen |
-| **Cron Job Agent** | `hermes cronjob list` | Schemalagda jobb som körs |
-| **Manual Agent** | Spawnad via Dashboardens "New Agent"-knapp | Manuellt startad agent |
-| **Chat Agent** | Chat-panelen | Agenten som körs i chatten (visas om den spawnar sub-agenter) |
+The Agent panel displays all active, completed, and failed agents in real-time. Data is fetched from Hermes CLI (`hermes process list --json`) and polled every 2 seconds.
 
 ---
 
-## 3. Agentlista — visuell design
+## 2. Agent Types
+
+| Type | Source | Description |
+|------|--------|-------------|
+| **Forge Agent** | `hermes process list` | Agents spawned by Forge loop |
+| **Cron Job Agent** | `hermes cronjob list` | Scheduled jobs |
+| **Manual Agent** | Spawned via Dashboard "New Agent" button | Manually started agent |
+| **Chat Agent** | Chat panel | Agent running in chat (visible if spawning sub-agents) |
+
+---
+
+## 3. Agent List — Visual Design
 
 ```
 ┌──────────────────────────────────────────┐
@@ -54,106 +54,106 @@ Agent-panelen visar alla aktiva, slutförda, och felade agenter i realtid. Data 
 
 ---
 
-## 4. Agent-card — fält
+## 4. Agent Card — Fields
 
-| Fält | Källa | Format |
-|------|-------|--------|
+| Field | Source | Format |
+|-------|--------|--------|
 | **Status** | Hermes process status | ● running / ✓ done / ✗ failed / ⏸ paused |
-| **Namn** | Agentens blueprint-namn | `code-reviewer-v3` |
-| **Score** | Eval-resultat | `87/100` (visas bara när klar) |
-| **Modell** | Vilken modell agenten använder | `deepseek-v4-flash` |
-| **Tid** | Hur länge den kört | `2m 34s` (running) / `3m 45s` (klar) |
-| **Tokens** | Tokens använda | `4.2K` |
-| **Kostnad** | Uppskattad kostnad | `$0.012` |
-| **Hastighet** | Tokens per sekund | `⚡ 45 t/s` (endast running) |
-| **Förloppsbar** | % av förväntad tid/tokens | ████████░░ 87% |
-| **Fel** | Felmeddelande (om failed) | `API timeout` |
+| **Name** | Agent blueprint name | `code-reviewer-v3` |
+| **Score** | Eval result | `87/100` (shown only when done) |
+| **Model** | Which model the agent uses | `deepseek-v4-flash` |
+| **Time** | How long it has run | `2m 34s` (running) / `3m 45s` (done) |
+| **Tokens** | Tokens used | `4.2K` |
+| **Cost** | Estimated cost | `$0.012` |
+| **Speed** | Tokens per second | `⚡ 45 t/s` (running only) |
+| **Progress bar** | % of expected time/tokens | ████████░░ 87% |
+| **Error** | Error message (if failed) | `API timeout` |
 
 ---
 
-## 5. Live-uppdatering
+## 5. Live Updates
 
 ```
 ┌─────────────────────────────────────────┐
-│           Poll Loop (var 2s)            │
+│           Poll Loop (every 2s)          │
 │                                         │
 │  hermes process list --json             │
 │         │                               │
 │         ▼                               │
 │  ┌──────────────────┐                   │
-│  │ Jämför med cache │                   │
+│  │ Compare to cache │                   │
 │  └────┬─────────┬───┘                   │
 │       │         │                       │
-│   Ny agent   Statusändring              │
+│   New agent   Status change             │
 │       │         │                       │
 │       ▼         ▼                       │
 │  ┌────────┐ ┌──────────┐               │
-│  │Lägg till│ │Uppdatera │               │
-│  │i lista │ │befintlig │               │
+│  │Add to  │ │Update    │               │
+│  │list    │ │existing  │               │
 │  │(slide) │ │(morph)   │               │
 │  └────────┘ └──────────┘               │
 └─────────────────────────────────────────┘
 ```
 
-**Optimeringar:**
-- Diffa JSON — skicka bara ändringar till UI
-- Bara rendera om synliga agenter (virtual scroll för 50+ agenter)
-- Status-prick animeras endast för running agents
+**Optimizations:**
+- Diff JSON — only send changes to UI
+- Only re-render visible agents (virtual scroll for 50+ agents)
+- Status dot animates only for running agents
 
 ---
 
-## 6. Filtrering & Sortering
+## 6. Filtering & Sorting
 
 ```
 ┌──────────────────────────────────────────┐
-│ 📡 AGENTS          [Alla ▼] [Senaste ▼] │
+│ 📡 AGENTS        [All ▼] [Most Recent ▼] │
 ├──────────────────────────────────────────┤
 ```
 
-| Filter | Alternativ |
-|--------|------------|
-| Status | Alla, Running, Completed, Failed, Paused |
-| Modell | Alla, deepseek-v4-flash, deepseek-v4-pro, ... |
-| Typ | Alla, Forge, Cron, Manual |
+| Filter | Options |
+|--------|---------|
+| Status | All, Running, Completed, Failed, Paused |
+| Model | All, deepseek-v4-flash, deepseek-v4-pro, ... |
+| Type | All, Forge, Cron, Manual |
 
-| Sortering | Beskrivning |
-|-----------|-------------|
-| Senaste | Senast uppdaterad först (default) |
-| Score | Högsta score först |
-| Tid | Längst körtid först |
-| Kostnad | Högst kostnad först |
-
----
-
-## 7. Interaktioner
-
-| Interaktion | Resultat |
-|-------------|----------|
-| **Klicka på agent** | Öppna Agent Detail View (högerpanel eller modal) |
-| **Dubbelklicka** | Fokusera agentens output/logg |
-| **Högerklicka** | Kontextmeny: Visa detaljer, Stoppa, Starta om, Exportera |
-| **✗ på failed agent** | Dismiss (dölj från listan, spara i historik) |
-| **🔄 på failed agent** | Retry — starta om agenten med samma parametrar |
+| Sort | Description |
+|------|-------------|
+| Most Recent | Last updated first (default) |
+| Score | Highest score first |
+| Time | Longest runtime first |
+| Cost | Highest cost first |
 
 ---
 
-## 8. Tomma tillstånd
+## 7. Interactions
 
-| Scenario | Visning |
+| Interaction | Result |
+|-------------|--------|
+| **Click agent** | Open Agent Detail View (right panel or modal) |
+| **Double-click** | Focus agent output/log |
+| **Right-click** | Context menu: View Details, Stop, Restart, Export |
+| **✗ on failed agent** | Dismiss (hide from list, save to history) |
+| **🔄 on failed agent** | Retry — restart agent with same parameters |
+
+---
+
+## 8. Empty States
+
+| Scenario | Display |
 |----------|---------|
-| Forge ej startad | "No agents active. [Start Forge] to begin spawning." |
-| Forge startad men inga agenter än | "Forge is running. Waiting for first agent spawn..." + spinner |
-| Alla agenter klara | "All agents completed. 3/3 passed quality gate (≥80)." |
-| Filter ger 0 resultat | "No agents match filter 'Failed'. [Rensa filter]" |
+| Forge not started | "No agents active. [Start Forge] to begin spawning." |
+| Forge started, no agents yet | "Forge is running. Waiting for first agent spawn..." + spinner |
+| All agents completed | "All agents completed. 3/3 passed quality gate (≥80)." |
+| Filter yields 0 results | "No agents match filter 'Failed'. [Clear filter]" |
 
 ---
 
-## 9. Agent-historik
+## 9. Agent History
 
-Slutförda agenter sparas i lokal databas (IndexedDB):
-- Visa senaste 100 agenter
-- Sök bland historiska agenter
-- Exportera agentdata som JSON/CSV
+Completed agents saved in local database (IndexedDB):
+- Show last 100 agents
+- Search historical agents
+- Export agent data as JSON/CSV
 
 ---
 

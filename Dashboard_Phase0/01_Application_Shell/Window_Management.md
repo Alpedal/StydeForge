@@ -5,49 +5,49 @@
 
 ---
 
-## 1. Fönsterbeteende
+## 1. Window Behavior
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │ StydeForge — Mission Control                          ─ □ ✕│
 ├─────────────────────────────────────────────────────────────┤
-│ [▶ Start] [⏸ Pausa] [⏹ Stopp] [⚙ Inställningar]           │
+│ [▶ Start] [⏸ Pause] [⏹ Stop] [⚙ Settings]                │
 ├──────────────────┬──────────────────────┬───────────────────┤
 │                  │                      │                   │
-│   AGENT PANEL    │   BENCHMARK PANEL    │   CHATT PANEL     │
+│   AGENT PANEL    │   BENCHMARK PANEL    │   CHAT PANEL      │
 │   (30%)          │   (35%)              │   (35%)           │
 │                  │                      │                   │
 │                  │                      │                   │
 │                  │                      │                   │
 │                  │                      │                   │
 ├──────────────────┴──────────────────────┴───────────────────┤
-│ Status: ● Forge Running | 3 agents active | 12.4K tokens  │
+│ Status: ● Forge Running | 3 agents active | 12.4K tokens   │
 └─────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## 2. Specifikationer
+## 2. Specifications
 
-| Egenskap | Värde | Notering |
-|----------|-------|----------|
-| Startstorlek | 1400×900 px | Rymmer alla 3 paneler bekvämt |
-| Minsta storlek | 900×600 px | Paneler kollapsar till tabbar under 1100px |
-| Maximerad | Fullskärm med marginaler | Optimerad för 1080p och 1440p |
-| Position | Kommer ihåg senaste position | Sparas i config |
-| Alltid överst | Toggle (⚙ inställningar) | För "mission control"-känsla |
-| Titelrad | Anpassad mörk titelrad | Inte Windows default |
-| Runda hörn | 8px border-radius | Modern känsla |
+| Property | Value | Note |
+|----------|-------|------|
+| Default size | 1400×900 px | Comfortably fits all 3 panels |
+| Minimum size | 900×600 px | Panels collapse to tabs below 1100px |
+| Maximized | Fullscreen with margins | Optimized for 1080p and 1440p |
+| Position | Remembers last position | Saved in config |
+| Always on top | Toggle (⚙ settings) | For "mission control" feel |
+| Title bar | Custom dark title bar | Not Windows default |
+| Rounded corners | 8px border-radius | Modern feel |
 
 ---
 
-## 3. Panel-layout
+## 3. Panel Layout
 
-### 3.1 Standardlayout (≥1400px bredd)
+### 3.1 Standard Layout (≥1400px width)
 
 ```
 ┌──────────┬───────────────┬───────────────┐
-│ AGENTS   │ BENCHMARKS    │ CHATT         │
+│ AGENTS   │ BENCHMARKS    │ CHAT          │
 │          │               │               │
 │ 30%      │ 35%           │ 35%           │
 │          │               │               │
@@ -55,71 +55,71 @@
 └──────────┴───────────────┴───────────────┘
 ```
 
-### 3.2 Kompakt layout (900-1399px)
+### 3.2 Compact Layout (900-1399px)
 
 ```
 ┌─────────────────┬──────────────────────┐
-│ AGENTS (40%)    │ CHATT (60%)          │
+│ AGENTS (40%)    │ CHAT (60%)           │
 │                 │                      │
-│ BENCHMARKS (dold│                      │
-│  — tabb högst   │                      │
-│  upp)           │                      │
+│ BENCHMARKS      │                      │
+│ (hidden — tab   │                      │
+│  at top)        │                      │
 └─────────────────┴──────────────────────┘
 ```
 
-### 3.3 Minimal layout (<900px)
+### 3.3 Minimal Layout (<900px)
 
 ```
 ┌────────────────────────────────────────┐
-│ [Agenter] [Benchmarks] [Chatt]  ← tabs│
+│ [Agents] [Benchmarks] [Chat]  ← tabs  │
 ├────────────────────────────────────────┤
 │                                        │
-│          Aktiv panel                   │
+│          Active panel                  │
 │                                        │
 └────────────────────────────────────────┘
 ```
 
 ---
 
-## 4. Dragbara paneler
+## 4. Draggable Panels
 
-Alla panelgränser är **dragbara** (resize handles):
-- Muspekaren ändras till ↔ vid panelgräns
-- Minsta panelbredd: 200px
-- Layout sparas i localStorage och återställs vid nästa start
-- Dubbelklick på panelgräns → återställ till default-proportion
-
----
-
-## 5. Tangentbordsgenvägar
-
-| Genväg | Funktion |
-|--------|----------|
-| `Ctrl+1` | Fokusera Agent-panelen |
-| `Ctrl+2` | Fokusera Benchmark-panelen |
-| `Ctrl+3` | Fokusera Chatt-panelen |
-| `Ctrl+Shift+S` | Starta Forge |
-| `Ctrl+Shift+P` | Pausa Forge |
-| `Ctrl+Shift+X` | Stoppa Forge |
-| `Ctrl+,` | Öppna inställningar |
-| `Ctrl+K` | Fokusera chatt-input |
-| `Escape` | Blur/a från input-fält |
+All panel borders are **draggable** (resize handles):
+- Cursor changes to ↔ at panel boundary
+- Minimum panel width: 200px
+- Layout saved in localStorage, restored on next launch
+- Double-click panel boundary → reset to default proportions
 
 ---
 
-## 6. Multi-monitor
+## 5. Keyboard Shortcuts
 
-| Scenario | Beteende |
+| Shortcut | Function |
 |----------|----------|
-| Primär skärm (1080p) | Standardlayout, maximerad |
-| Sekundär skärm (1440p 4K) | Flytta fönster = behåll layout, skala upp |
-| 3+ skärmar | Kom ihåg position per skärm-konfiguration |
+| `Ctrl+1` | Focus Agent panel |
+| `Ctrl+2` | Focus Benchmark panel |
+| `Ctrl+3` | Focus Chat panel |
+| `Ctrl+Shift+S` | Start Forge |
+| `Ctrl+Shift+P` | Pause Forge |
+| `Ctrl+Shift+X` | Stop Forge |
+| `Ctrl+,` | Open Settings |
+| `Ctrl+K` | Focus chat input |
+| `Escape` | Blur/unfocus input field |
 
 ---
 
-## 7. Fönsterstatus
+## 6. Multi-Monitor
 
-Fönsterstatus sparas i config:
+| Scenario | Behavior |
+|----------|----------|
+| Primary screen (1080p) | Standard layout, maximized |
+| Secondary screen (1440p/4K) | Move window = keep layout, scale up |
+| 3+ screens | Remember position per screen configuration |
+
+---
+
+## 7. Window State
+
+Window state saved in config:
 ```json
 {
   "window": {

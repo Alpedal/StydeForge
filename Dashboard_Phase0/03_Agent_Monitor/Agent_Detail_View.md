@@ -5,13 +5,13 @@
 
 ---
 
-## 1. Översikt
+## 1. Overview
 
-Klick på en agent i listan öppnar en detaljvy — antingen som en slide-in panel från höger eller som en expanderad sektion i agent-listan.
+Clicking an agent in the list opens a detail view — either as a slide-in panel from the right or as an expanded section in the agent list.
 
 ---
 
-## 2. Detaljvy — layout
+## 2. Detail View — Layout
 
 ```
 ┌──────────────────────────────────────────────────┐
@@ -79,85 +79,85 @@ Klick på en agent i listan öppnar en detaljvy — antingen som en slide-in pan
 
 ---
 
-## 3. Sektion: Overview
+## 3. Section: Overview
 
-| Fält | Beskrivning |
-|------|-------------|
+| Field | Description |
+|-------|-------------|
 | Status | ● Running / ✓ Completed / ✗ Failed |
-| Model | Modellnamn + provider |
-| Blueprint | Blueprint som agenten spawnades från |
-| Duration | Total körtid |
+| Model | Model name + provider |
+| Blueprint | Blueprint the agent was spawned from |
+| Duration | Total runtime |
 | Tokens | Input + output tokens |
-| Cost | Uppskattad API-kostnad |
-| Speed | Genomsnittlig tokens/sekund |
-| Started | Start-tid (ISO 8601) |
-| Finished | Slut-tid (eller "—" om running) |
-| Skills | Lista av skills som laddades |
+| Cost | Estimated API cost |
+| Speed | Average tokens/second |
+| Started | Start time (ISO 8601) |
+| Finished | End time (or "—" if running) |
+| Skills | List of skills loaded |
 
 ---
 
-## 4. Sektion: Evaluation
+## 4. Section: Evaluation
 
-Visas endast om agenten har slutförts och evaluerats.
+Shown only if agent has completed and been evaluated.
 
-| Element | Beskrivning |
+| Element | Description |
 |---------|-------------|
-| Overall Score | 0-100, färgkodat (grön ≥80, gul ≥60, röd <60) |
-| Kategorier | Tabell med delpoäng och vikter |
-| Judge | Vilken modell som agerade domare |
-| Eval time | Hur lång tid evalueringen tog |
-| Feedback | Kvalitativ feedback från judge (om tillgänglig) |
+| Overall Score | 0-100, color-coded (green ≥80, yellow ≥60, red <60) |
+| Categories | Table with sub-scores and weights |
+| Judge | Which model acted as judge |
+| Eval time | How long evaluation took |
+| Feedback | Qualitative feedback from judge (if available) |
 
 ---
 
-## 5. Sektion: Output
+## 5. Section: Output
 
-| Vy | Beskrivning |
-|----|-------------|
-| Preview | Renderad markdown/syntax-highlight |
-| Raw | Rå text |
-| Download | Ladda ner som .md / .txt / .json |
-| Diff | Om agenten modifierade filer — visa diff (unified diff-format) |
+| View | Description |
+|------|-------------|
+| Preview | Rendered markdown/syntax highlighting |
+| Raw | Raw text |
+| Download | Download as .md / .txt / .json |
+| Diff | If agent modified files — show unified diff |
 
 ---
 
-## 6. Sektion: Log
+## 6. Section: Log
 
-| Filter | Visar |
+| Filter | Shows |
 |--------|-------|
-| All | Alla loggrader |
-| Errors | Endast ERROR |
+| All | All log levels |
+| Errors | Only ERROR |
 | Warnings | WARN + ERROR |
-| Info | INFO + ovan |
+| Info | INFO + above |
 
-**Funktioner:**
-- Sök i loggen (Ctrl+F)
-- Kopiera markerade rader
+**Features:**
+- Search in log (Ctrl+F)
+- Copy selected lines
 - Auto-scroll (toggle)
-- Exportera hela loggen
+- Export entire log
 
 ---
 
-## 7. Actionbar
+## 7. Action Bar
 
-| Knapp | Funktion | Syns när |
-|-------|----------|----------|
-| 🔄 Retry | Starta om agenten | Failed / Completed |
-| ⏹ Stop | Stoppa agenten | Running |
-| 📋 Copy Output | Kopiera output till clipboard | Completed |
-| 💾 Export | Exportera agentdata | Completed / Failed |
-| ✕ Close | Stäng detaljvyn | Alltid |
+| Button | Function | Visible When |
+|--------|----------|-------------|
+| 🔄 Retry | Restart agent | Failed / Completed |
+| ⏹ Stop | Stop agent | Running |
+| 📋 Copy Output | Copy output to clipboard | Completed |
+| 💾 Export | Export agent data | Completed / Failed |
+| ✕ Close | Close detail view | Always |
 
 ---
 
-## 8. Realtidsuppdatering (running agent)
+## 8. Real-time Updates (Running Agent)
 
-När agenten körs:
-- Duration uppdateras live (tickar varje sekund)
-- Token counter ökar
-- Output streamas in (append, inte replace)
-- Logg uppdateras kontinuerligt
-- Progress bar fylls baserat på förväntad tokens/tid
+While agent is running:
+- Duration updates live (ticks every second)
+- Token counter increments
+- Output streams in (append, not replace)
+- Log updates continuously
+- Progress bar fills based on expected tokens/time
 
 ---
 

@@ -5,27 +5,27 @@
 
 ---
 
-## 1. Översikt
+## 1. Overview
 
-Dashboarden låter användaren manuellt spawna en ny agent — utan att gå via Forge-loopen. Detta är för ad-hoc uppgifter: "kör code review på den här filen", "generera tester för den här modulen".
+The Dashboard lets the user manually spawn a new agent — without going through the Forge loop. This is for ad-hoc tasks: "run code review on this file", "generate tests for this module".
 
 ---
 
-## 2. Spawn-flöde
+## 2. Spawn Flow
 
 ```
-Klicka [+ New Agent] i agent-panelen
+Click [+ New Agent] in agent panel
         │
         ▼
 ┌─────────────────────────────────┐
 │  SPAWN NEW AGENT                │
 │                                 │
 │  ┌─ Blueprint ────────────────┐ │
-│  │ [Välj blueprint ▼]         │ │
+│  │ [Select blueprint ▼]       │ │
 │  │  • code-review             │ │
 │  │  • test-generator          │ │
 │  │  • doc-writer              │ │
-│  │  • custom (skriv prompt)   │ │
+│  │  • custom (write prompt)   │ │
 │  └────────────────────────────┘ │
 │                                 │
 │  ┌─ Model ────────────────────┐ │
@@ -41,8 +41,8 @@ Klicka [+ New Agent] i agent-panelen
 │                                 │
 │  ┌─ Prompt / Instructions ────┐ │
 │  │ ┌─────────────────────────┐ │ │
-│  │ │ Granska auth-service.ts │ │ │
-│  │ │ för säkerhetshål       │ │ │
+│  │ │ Review auth-service.ts  │ │ │
+│  │ │ for security issues     │ │ │
 │  │ │                         │ │ │
 │  │ └─────────────────────────┘ │ │
 │  └────────────────────────────┘ │
@@ -50,7 +50,7 @@ Klicka [+ New Agent] i agent-panelen
 │  ┌─ Options ──────────────────┐ │
 │  │ ☐ Caveman Ultra mode      │ │
 │  │ ☑ Save output to file     │ │
-│  │ ☐ Evaluate after complete │ │
+│  │ ☐ Evaluate after completion│ │
 │  └────────────────────────────┘ │
 │                                 │
 │  [Cancel]              [▶ Spawn]│
@@ -59,40 +59,40 @@ Klicka [+ New Agent] i agent-panelen
 
 ---
 
-## 3. Formulärfält
+## 3. Form Fields
 
-| Fält | Typ | Default | Beskrivning |
-|------|-----|---------|-------------|
-| Blueprint | Dropdown | Senast använda | Välj från tillgängliga blueprints eller "custom" |
-| Model | Dropdown | deepseek-v4-flash | Välj modell från aktiva providers |
-| Skills | Multi-select | Tom | Välj skills att ladda |
-| Prompt | Textarea | Tom | Instruktioner till agenten |
-| Caveman Ultra | Checkbox | true | Aktivera Caveman Ultra (70% färre tokens) |
-| Save output | Checkbox | true | Spara output till fil |
-| Evaluate | Checkbox | true | Kör eval efter slutförande |
+| Field | Type | Default | Description |
+|-------|------|---------|-------------|
+| Blueprint | Dropdown | Last used | Select from available blueprints or "custom" |
+| Model | Dropdown | deepseek-v4-flash | Select model from active providers |
+| Skills | Multi-select | Empty | Select skills to load |
+| Prompt | Textarea | Empty | Instructions for the agent |
+| Caveman Ultra | Checkbox | true | Enable Caveman Ultra (70% fewer tokens) |
+| Save output | Checkbox | true | Save output to file |
+| Evaluate | Checkbox | true | Run eval after completion |
 
 ---
 
-## 4. Blueprint-system
+## 4. Blueprint System
 
-### 4.1 Inbyggda blueprints
+### 4.1 Built-in Blueprints
 
-| Blueprint | Beskrivning | Default skills |
+| Blueprint | Description | Default Skills |
 |-----------|-------------|----------------|
-| `code-review` | Granska kod | requesting-code-review, systematic-debugging |
-| `test-generator` | Generera tester | test-driven-development |
-| `doc-writer` | Skriv dokumentation | — |
-| `refactor` | Refaktorisera kod | simplify-code |
-| `debug` | Felsök ett problem | systematic-debugging |
-| `custom` | Fritext-prompt | Manuellt val |
+| `code-review` | Review code | requesting-code-review, systematic-debugging |
+| `test-generator` | Generate tests | test-driven-development |
+| `doc-writer` | Write documentation | — |
+| `refactor` | Refactor code | simplify-code |
+| `debug` | Debug an issue | systematic-debugging |
+| `custom` | Free-text prompt | Manual selection |
 
-### 4.2 Custom blueprints
+### 4.2 Custom Blueprints
 
-Användaren kan spara egna blueprints:
+Users can save custom blueprints:
 ```json
 {
   "name": "my-security-audit",
-  "description": "Granska kod för OWASP Top 10 sårbarheter",
+  "description": "Review code for OWASP Top 10 vulnerabilities",
   "model": "deepseek-v4-pro",
   "skills": ["systematic-debugging"],
   "caveman_ultra": false
@@ -101,42 +101,42 @@ Användaren kan spara egna blueprints:
 
 ---
 
-## 5. Spawn-mekanism
+## 5. Spawn Mechanism
 
-När användaren klickar [▶ Spawn]:
+When user clicks [▶ Spawn]:
 
 ```
-1. Bygg kommando:
+1. Build command:
    hermes delegate_task \
      --goal "<prompt>" \
      --model "<model>" \
      --skills "<skill1>,<skill2>" \
      --caveman-ultra
 
-2. Kör som child-process
+2. Run as child process
 
-3. Agent dyker upp i Agent-panelen med status ● Running
+3. Agent appears in Agent panel with status ● Running
 
-4. Output streamas till Agent Detail View
+4. Output streams to Agent Detail View
 ```
 
 ---
 
-## 6. Validering
+## 6. Validation
 
-| Regel | Felmeddelande |
-|-------|---------------|
-| Prompt får inte vara tom | "Please enter instructions for the agent" |
-| Minst en skill måste väljas (ej custom) | "Select at least one skill" |
-| Modell måste ha en aktiv provider | "Provider not connected. Check settings." |
+| Rule | Error Message |
+|------|---------------|
+| Prompt must not be empty | "Please enter instructions for the agent" |
+| At least one skill (non-custom) | "Select at least one skill" |
+| Model must have active provider | "Provider not connected. Check settings." |
 
 ---
 
-## 7. Quick-Spawn (genväg)
+## 7. Quick Spawn (Shortcut)
 
-Från chatten: skriv `/spawn code-review auth-service.ts`
+From chat: type `/spawn code-review auth-service.ts`
 
-Chat-agenten tolkar kommandot och spawnar agenten utan att öppna formuläret.
+Chat agent interprets command and spawns agent without opening the form.
 
 ---
 
