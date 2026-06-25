@@ -58,7 +58,11 @@ Choosing a desktop framework is the most important technical decision. It affect
 
 ---
 
-## 3. Recommendation: Tauri v2
+## 3. Decision: Tauri v2
+
+**Tauri v2 is the chosen framework. This decision is final for Phase 1.**
+
+No further evaluation of alternatives is needed. The score comparison below documents the rationale, but the choice is made.
 
 **Why Tauri?**
 

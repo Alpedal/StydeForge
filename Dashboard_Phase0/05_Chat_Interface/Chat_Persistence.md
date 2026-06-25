@@ -16,7 +16,7 @@ All chat sessions are stored locally in IndexedDB. No data leaves the machine. S
 ### 2.1 Database Schema (IndexedDB)
 
 ```
-Database: stydeforge_chat
+Database: stydeforge_dashboard
 ├── Object Store: sessions
 │   ├── id (string, primary key)
 │   ├── title (string)

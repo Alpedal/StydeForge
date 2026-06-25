@@ -7,7 +7,7 @@
 
 ---
 
-## Document Overview (35 documents)
+## Document Overview (36 documents)
 
 | # | Section | Document | Description |
 |---|---------|----------|-------------|
@@ -18,6 +18,7 @@
 | 01 | Application Shell | `Lifecycle_Management.md` | Start/pause/stop the StydeForge system |
 | 01 | Application Shell | `Process_Control.md` | Spawn/kill Hermes processes, cron jobs |
 | 01 | Application Shell | `System_Tray_Integration.md` | Minimize to tray, status indicator, notifications |
+| 02 | UI/UX | `Onboarding_Flow.md` | First-run wizard: Hermes detection, provider setup, preferences |
 | 02 | UI/UX | `Layout_Design.md` | Grid system, 3 panels, resizable, responsive |
 | 02 | UI/UX | `Design_System.md` | Dark theme, typography, color palette, icons |
 | 02 | UI/UX | `Component_Library.md` | Reusable components (buttons, panels, tabs) |
@@ -75,5 +76,5 @@
 
 ---
 
-**Status:** Phase 0 — Complete ✅. 35 design documents across 10 sections.
+**Status:** Phase 0 — Complete ✅. 36 design documents across 10 sections.
 **Last Updated:** 2026-06-25

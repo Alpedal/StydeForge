@@ -37,7 +37,9 @@ Phase 0 is design — nothing has been implemented. Phase 1 is the first impleme
 
 ## 3. Phase 1 — Scope (MVP)
 
-### 3.1 Must Have (P0)
+**P0 is the only priority for Phase 1.** Do not start P1 or P2 until P0 is complete and stable. The critical path is: **Core Loop → Blueprint Spawn → Eval Pipeline** (Forge) and **Dashboard Shell → Chat with Tools → Agent Monitor** (Dashboard). Everything else depends on these.
+
+### 3.1 Must have — P0 (critical path)
 
 | Feature | Priority | Estimated Time |
 |---------|----------|----------------|

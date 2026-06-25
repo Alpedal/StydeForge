@@ -91,7 +91,7 @@ The Dashboard reports GPU usage for local models:
 │ • deepseek-r1:8b       GPU: 5.8GB    │ 3080     │
 │ • codellama:7b         GPU: 4.2GB    │ 3070 Ti  │
 │                                                   │
-│ VRAM available: 6.2GB / 18GB total               │
+│ VRAM available: 10.6GB / 18GB total               │
 │                                                   │
 └──────────────────────────────────────────────────┘
 ```

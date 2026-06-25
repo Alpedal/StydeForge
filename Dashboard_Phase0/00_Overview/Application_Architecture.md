@@ -24,7 +24,7 @@
 │  │                Core Controller                      │  │
 │  │  ┌──────────┐  ┌──────────┐  ┌──────────────────┐  │  │
 │  │  │Process   │  │Benchmark │  │ Chat Controller  │  │  │
-│  │  │Monitor   │  │Engine    │  │                  │  │  │
+│  │  │Manager   │  │Engine    │  │                  │  │  │
 │  │  └────┬─────┘  └────┬─────┘  └────────┬─────────┘  │  │
 │  └───────┼─────────────┼────────────────┼────────────┘  │
 │          │             │                │                │
@@ -76,7 +76,7 @@ Three main panels in a responsive grid:
 ### 2.3 Core Controller
 
 Business logic:
-- **Process Monitor** — polls Hermes CLI, keeps agent list synchronized
+- **Process Manager** — polls Hermes CLI, keeps agent list synchronized
 - **Benchmark Engine** — collects performance data, computes graphs
 - **Chat Controller** — manages provider selection, tool calls, streaming
 
@@ -168,7 +168,8 @@ UI [⏹ Stop] ──→ Core Controller ──→ kill process
 
 ```json
 {
-  "hermes_path": "C:/Users/Pontus/.hermes/",
+  "version": "1.0",
+  "hermes_path": "C:/Users/Pontus/.hermes",
   "providers": {
     "deepseek": {
       "api_key": "sk-...",
@@ -179,14 +180,38 @@ UI [⏹ Stop] ──→ Core Controller ──→ kill process
       "default_model": "gpt-4o"
     }
   },
-  "ui": {
-    "theme": "dark",
+  "appearance": {
     "font_size": 14,
-    "start_minimized": false
+    "font": "JetBrains Mono",
+    "default_layout": "3-panels"
+  },
+  "chat": {
+    "default_model": "deepseek-v4-pro",
+    "streaming": true,
+    "show_tool_calls": true,
+    "auto_save": true,
+    "confirm_tools": false,
+    "max_context_messages": 50,
+    "auto_cleanup_days": 90
   },
   "forge": {
-    "auto_start": false,
-    "stop_on_exit": true
+    "hermes_profile": "default",
+    "agent_model": "deepseek-v4-flash",
+    "eval_model": "deepseek-v4-pro",
+    "teacher_model": "deepseek-v4-pro",
+    "max_concurrent_agents": 4,
+    "agent_timeout_minutes": 30,
+    "caveman_ultra": true,
+    "auto_evaluate": true,
+    "save_failed": false
+  },
+  "advanced": {
+    "start_with_windows": false,
+    "auto_start_forge": false,
+    "minimize_to_tray": true,
+    "notifications": true,
+    "log_level": "INFO",
+    "log_path": "C:/Users/Pontus/.hermes/logs"
   }
 }
 ```

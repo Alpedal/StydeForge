@@ -92,8 +92,8 @@ interface BenchmarkRecord {
   "ui_state": {
     "active_tab": "chat",
     "panel_widths": {
-      "agents": 0.30,
-      "benchmarks": 0.35
+      "agents_width": 0.30,
+      "benchmarks_width": 0.35
     },
     "window_position": { "x": 100, "y": 50 },
     "window_size": { "width": 1400, "height": 900 },
