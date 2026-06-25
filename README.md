@@ -8,7 +8,7 @@
 
 Two integrated projects:
 
-### 1. StydeForge Forge — The Refinery (`v3.0_Phase0/`)
+### 1. StydeForge Forge — The Refinery (`Planing/v3.0_Phase0/`)
 
 A portable USB-based system that transforms raw agent blueprints into world-class specialized agents through a continuous loop of spawning, evaluation, improvement, and checkpointing.
 
@@ -18,7 +18,7 @@ A portable USB-based system that transforms raw agent blueprints into world-clas
 - **Hardware-aware:** Auto-adapts to available GPUs
 - **Status:** Phase 0 design — 53 documents, 13 sections
 
-### 2. StydeForge Dashboard — Mission Control (`Dashboard_Phase0/`)
+### 2. StydeForge Dashboard — Mission Control (`Planing/Dashboard_Phase0/`)
 
 A Tauri-based desktop application (`StydeForge.exe`) that serves as the command center for the entire StydeForge ecosystem.
 
@@ -36,7 +36,7 @@ A Tauri-based desktop application (`StydeForge.exe`) that serves as the command 
 StydeForge/
 ├── README.md                     ← You are here
 │
-├── v3.0_Phase0/                  ← Forge design (Phase 0)
+├── Planing/v3.0_Phase0/                  ← Forge design (Phase 0)
 │   ├── 00_Overview/              (architecture, core loop, data models)
 │   ├── 01_Vision/                (vision, goals, blueprint catalog)
 │   ├── 02_Hardware/              (adaptation layer, resource governor)
@@ -52,7 +52,7 @@ StydeForge/
 │   ├── 12_Teacher_Agent/         (teacher loop, feedback)
 │   └── 13_Hooks_Events/          (event system, hooks)
 │
-├── Dashboard_Phase0/             ← Dashboard design (Phase 0)
+├── Planing/Dashboard_Phase0/             ← Dashboard design (Phase 0)
 │   ├── 00_Overview/              (vision, architecture, index)
 │   ├── 01_Application_Shell/     (window, lifecycle, processes, tray)
 │   ├── 02_UI_UX/                 (layout, design system, components, onboarding)
@@ -115,8 +115,8 @@ The Dashboard is the face. Hermes/Forge is the engine.
 
 ## Reading Order
 
-1. `v3.0_Phase0/00_Overview/PHASE0_INDEX.md` — Forge overview
-2. `Dashboard_Phase0/00_Overview/DASHBOARD_INDEX.md` — Dashboard overview
+1. `Planing/v3.0_Phase0/00_Overview/PHASE0_INDEX.md` — Forge overview
+2. `Planing/Dashboard_Phase0/00_Overview/DASHBOARD_INDEX.md` — Dashboard overview
 3. Then dive into the section that interests you
 
 ---
