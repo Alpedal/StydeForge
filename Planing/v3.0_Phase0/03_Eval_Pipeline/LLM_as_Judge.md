@@ -77,9 +77,10 @@ def llm_as_judge(agent_output: str, task: str, rubric: dict,
 
 | Score | Action |
 |-------|--------|
-| ≥ 80 | Approved → saved to USB |
-| 70-79 | Iterate (max 3 attempts) |
-| < 70 | Rejected → lessons saved |
+| ≥85×3 | Promoted → production |
+| ≥80 | Approved → stays in refinery |
+| 70-79 | Iterate (max 3) |
+| <70 | Rejected → archive |
 
 ---
 

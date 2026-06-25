@@ -20,7 +20,7 @@ teacher-guided improvement, and Caveman Ultra efficiency (70% fewer tokens).
 
 | # | Goal | Success Metric |
 |---|------|----------------|
-| 1 | **Quality over quantity** | Every agent ≥ 80/100 on eval |
+| 1 | **Quality over quantity** | Every agent ≥80/100 to pass. ≥85×3 → production |
 | 2 | **Full portability** | Works on Machine-A and Machine-B without manual config |
 | 3 | **One-prompt import** | Import entire forge on any machine with one prompt |
 | 4 | **Traceable evolution** | Complete lineage from v1.0 to current for every agent |
@@ -67,11 +67,10 @@ teacher-guided improvement, and Caveman Ultra efficiency (70% fewer tokens).
 
 | Level | Score | Action |
 |-------|-------|--------|
-| Elite | ≥ 90/100 | Saved with full documentation + prioritized |
-| World-Class | ≥ 85/100 | Saved. Used as teacher/coach candidate |
-| Production | ≥ 80/100 | Saved to USB |
-| Needs Work | 70-79 | Iterate (max 3 attempts) |
-| Rejected | < 70 | Discarded. Lessons saved to Historical Learning |
+| Production | ≥85×3 consecutive | Promoted to StydeAgents/production/ |
+| Passed | ≥80/100 | Stays in refinery, continues iterating |
+| Needs Work | 70-84 | Iterate (max 3 attempts) |
+| Rejected | <70 | Moved to archive, lessons saved |
 
 ---
 

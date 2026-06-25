@@ -20,7 +20,7 @@ logs/
 ├── loops/
 │   └── loop-<timestamp>.jsonl   # Per loop-iteration
 ├── agents/
-│   └── <agent-id>.jsonl         # Per agent: spawn, runs, results
+│   └── <agent-name>.jsonl       # Per agent: spawn, runs, results
 ├── errors/
 │   └── error-<timestamp>.jsonl  # Crashes, incidents, anomalies
 ├── security/

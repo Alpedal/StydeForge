@@ -162,7 +162,9 @@ Design philosophy: one logical home, atomicity first, hardware aware, full trace
 ## Q
 
 **Quality Gate**
-Quality threshold. Agents must score ≥ 80/100 to be saved to USB. 70-79 iterates (max 3 attempts). < 70 rejected.
+Quality threshold. Agents must score ≥80/100 to pass an eval.
+≥85/100 on 3 consecutive evals → promoted to production.
+70-84 iterates (max 3 attempts). <70 rejected to archive.
 
 ## R
 

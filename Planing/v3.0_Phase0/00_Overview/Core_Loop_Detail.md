@@ -327,6 +327,8 @@ def loop_with_errors(blueprint: str, benchmark: str) -> dict:
     if composite >= 80:
         try:
             improve(blueprint, composite, judge_eval)
+            if composite >= 85 and consecutive_passes >= 3:
+                promote_to_production(agent_name)
             checkpoint()
         except Exception as e:
             log_error("improve_or_checkpoint_failed", e)

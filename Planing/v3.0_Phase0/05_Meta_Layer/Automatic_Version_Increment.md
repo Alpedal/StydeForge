@@ -130,7 +130,7 @@ version_decision:
 
 ## 7. Integration
 
-- Called after every successful eval (score ≥ 80)
+- Called after every successful eval (score ≥80; promoted on ≥85×3)
 - Decision logged to `06_IMPROVEMENTS/version_decisions/`
 - Version history stored in `07_GENERATIONS/version_history.json`
 - Automatic update of `00_MANIFEST.json` with latest versions

@@ -128,7 +128,7 @@ HermesForge/
 - Redundant copies (use links/index instead)
 - Unstructured raw material
 - Temporary or cache files
-- Low-quality or unoptimized content (< 80/100)
+- Low-quality or unoptimized content (< 80/100, stays in refinery or archive)
 
 ---
 

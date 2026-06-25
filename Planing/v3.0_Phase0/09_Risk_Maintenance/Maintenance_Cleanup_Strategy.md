@@ -88,7 +88,7 @@ python scripts/forge.py maintenance run --dry-run
 ```python
 def storage_breakdown() -> dict:
     return {
-        "agents_gb": get_dir_size_gb("02_AGENTS/"),
+        "agents_gb": get_dir_size_gb("StydeAgents/production/"),
         "knowledge_gb": get_dir_size_gb("01_KNOWLEDGE/"),
         "skills_gb": get_dir_size_gb("04_SKILLS/"),
         "eval_gb": get_dir_size_gb("07_GENERATIONS/"),

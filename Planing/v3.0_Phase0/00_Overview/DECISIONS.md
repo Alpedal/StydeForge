@@ -23,7 +23,7 @@ Prevents the same discussions from recurring months later.
 | Field | Value |
 |-------|-------|
 | **Date** | 2026-06-25 |
-| **Decision** | All agents must score ≥ 80/100 on eval to be saved to USB |
+| **Decision** | All agents must score ≥80/100 to pass eval. ≥85×3 consecutive → promoted to production |
 | **Alternatives** | Save everything (quantity), or ≥ 90 (elite only) |
 | **Rationale** | Prevents USB from filling with mediocre agents. 80 is high enough for quality but achievable. 90 would be too strict initially. |
 | **Impact** | ~30-40% of agent runs rejected. Historical Learning captures lessons from failures. |

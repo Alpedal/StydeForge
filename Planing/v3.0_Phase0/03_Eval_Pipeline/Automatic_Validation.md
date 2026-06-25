@@ -54,9 +54,10 @@ and teacher review.
 
 | Score | Action |
 |-------|--------|
-| ≥ 80 | Approved → atomic write to USB |
-| 70-79 | Iteration required (max 3) |
-| < 70 | Rejected → lessons saved to Historical Learning |
+| ≥85×3 | Promoted → production |
+| ≥80 | Approved → stays in refinery |
+| 70-84 | Iteration required (max 3) |
+| <70 | Rejected → archive |
 
 ---
 

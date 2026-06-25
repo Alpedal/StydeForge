@@ -10,7 +10,7 @@
 | ID | Risk | Probability | Impact | Mitigation |
 |----|------|-------------|--------|------------|
 | R01 | USB corruption | Medium | High | Atomic Transactions + Checkpoints |
-| R02 | Divergent learning | Medium | High | 80/100 quality gate + Bayesian Opt |
+| R02 | Divergent learning | Medium | High | 80/100 eval gate + ≥85×3 production gate + Bayesian Opt |
 | R03 | VRAM exhaustion (Machine-B) | High | Medium | Hardware Adapter + Resource Governor |
 | R04 | Version conflicts on import | Low | Medium | Auto Version Increment |
 | R05 | Eval bias over time | Medium | High | Bias Calibration + Cross-Consensus |

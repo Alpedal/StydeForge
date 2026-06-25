@@ -63,7 +63,7 @@ end-to-end.
 - [ ] At least one agent reaches ≥ 85/100
 - [ ] Checkpoint → crash → recovery works without data loss
 - [ ] Export → import on different machine works
-- [ ] Second blueprint reaches ≥ 80/100
+- [ ] Second blueprint reaches ≥85×3 (production-ready)
 
 ---
 
