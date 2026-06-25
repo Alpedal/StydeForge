@@ -161,4 +161,64 @@ These could be pulled forward into late Phase 1:
 
 ---
 
-**Status:** Phase 0 complete. 50 features queued for Phase 1+.
+## Top 20 Agents — World-Class Priority Queue
+
+Build order for Styde Forge world-class agent refinery. Each agent designed for the Forge loop (spawn → eval → improve → checkpoint).
+
+### Tier 1 — Revenue Generators (Build First)
+
+| # | Agent | What it does | Forge Boost | Customer Value |
+|---|-------|-------------|-------------|----------------|
+| 1 | Consultant Auditor | Crawl website → classify digital maturity → audit report | Eval loop improves classification accuracy | Sales hook. Show prospects what AI found |
+| 2 | Invoice Processor | PDF → extract line items, VAT, dates → structured JSON | Extraction accuracy improves per industry | 5-15h/week saved. Direct cost reduction |
+| 3 | Customer Service Triage | Email/chat → classify urgency → draft response or route | Classification + response quality improve | First response: hours → seconds |
+| 4 | Meeting Summarizer | Transcript → decisions, actions, owners, deadlines | Extraction precision improves | Zero post-meeting admin |
+| 5 | Email Drafter | Context + knowledge → professional email | Tone adapts per user | 2-5h/week saved |
+
+### Tier 2 — Efficiency Multipliers
+
+| # | Agent | What it does | Forge Boost | Customer Value |
+|---|-------|-------------|-------------|----------------|
+| 6 | Document Classifier | Any document → classify type → route to handler | Type coverage expands | Foundation for all doc workflows |
+| 7 | Contract Reviewer | Contract → key clauses, risks → flagged | Risk detection improves per industry | Legal review time -70% |
+| 8 | Report Writer | Data + template → polished business report | Quality improves per report type | 4h → 15 min |
+| 9 | Data Cleaner | Messy spreadsheet → duplicates, errors, fixes | Error pattern detection improves | Hours of Excel eliminated |
+| 10 | Calendar Assistant | Natural language → find slots, book, invite | Learns per-person preferences | 1-2h/week saved |
+
+### Tier 3 — Capability Builders
+
+| # | Agent | What it does | Forge Boost | Customer Value |
+|---|-------|-------------|-------------|----------------|
+| 11 | Code Reviewer | Code → bugs, security, style → fixes | Bug detection rate improves | Internal devs ship faster |
+| 12 | SQL Query Generator | NL question + schema → correct SQL | Query correctness improves | Non-tech staff query DBs |
+| 13 | Translator (SV↔EN) | Business docs → translated with tone + terminology | Domain terminology accuracy | Swedish export companies |
+| 14 | Social Media Writer | Company news → platform-optimized posts | Engagement prediction improves | Consistent presence, no staff |
+| 15 | Onboarding Guide | Role + handbook → personalized plan | Per-role requirements learned | Structured onboarding, no HR |
+
+### Tier 4 — Specialized Agents
+
+| # | Agent | What it does | Forge Boost | Customer Value |
+|---|-------|-------------|-------------|----------------|
+| 16 | GDPR Compliance Checker | Privacy docs → GDPR gaps → article references | Detection coverage expands | Audit prep: weeks → hours |
+| 17 | Inventory Forecaster | Sales history → stock predictions 30/60/90d | Forecast accuracy improves | Reduced stockouts + overstock |
+| 18 | Recruitment Screener | CVs + job desc → ranked candidates → questions | Ranking accuracy improves | 50 CVs → top 5 in minutes |
+| 19 | Competitor Monitor | Competitor sites → changes detected → weekly brief | Signal-to-noise improves | Intel without manual work |
+| 20 | Meta-Improver | Forge eval results → systemic weaknesses → improvements | This IS the self-improvement engine | All agents get better every iteration |
+
+### Build Timeline
+
+```
+WEEK 1-2:   #1 Consultant Auditor + #5 Email Drafter
+WEEK 3-4:   #2 Invoice Processor + #3 Customer Service Triage
+WEEK 5-6:   #6 Document Classifier + #10 Calendar Assistant
+WEEK 7-8:   #4 Meeting Summarizer + #8 Report Writer + #7 Contract Reviewer
+WEEK 9-10:  #16 GDPR Checker + #14 Social Media Writer
+WEEK 11-12: #11 Code Reviewer + #20 Meta-Improver
+WEEK 13+:   Remaining agents in priority order
+```
+
+Each agent has a defined benchmark for the Forge eval loop. See `Top_20_Agents.md` for full specifications.
+
+---
+
+**Status:** Phase 0 complete. 50 features + 20 agents queued for Phase 1+.
