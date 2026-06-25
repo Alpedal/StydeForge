@@ -1,7 +1,7 @@
 # Styde Forge v3.0 — Phase 0 Index
 
-**Kodnamn:** The Crucible
-**Typ:** Portable Evolutionary Elite Agent Refinery
+**Codename:** The Crucible
+**Type:** Portable Evolutionary Elite Agent Refinery
 **Version:** 3.0
 **Status:** Phase 0 — Complete ✅ (Updated 2026-06-25)
 
@@ -66,7 +66,7 @@
 
 ---
 
-## Rekommenderad Läsordning
+## Recommended Reading Order
 
 1. `PHASE0_INDEX.md` ← Du är här
 2. `Master_Architecture_Overview.md` — Helikopterperspektiv

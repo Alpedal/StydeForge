@@ -3,176 +3,155 @@
 **Styde Forge v3.0 — "The Crucible"**
 **Phase 0 — Reference**
 
-Varje designbeslut loggas här med datum, alternativ som övervägdes, och motivering.
-Förhindrar att samma diskussioner återkommer månader senare.
+Every design decision logged with date, alternatives considered, and rationale.
+Prevents the same discussions from recurring months later.
 
 ---
 
-## D01 — Meta-layer över Docker Swarm
+## D01 — Meta-Layer over Docker Swarm
 
-| Fält | Värde |
-|------|-------|
-| **Datum** | 2026-06-25 |
-| **Beslut** | Använd Meta-layer (in-process) istället för Docker Swarm för orkestrering |
-| **Alternativ** | Docker Swarm, Kubernetes, Ray, manuell orkestrering |
-| **Motivering** | Bättre VRAM-utnyttjande på Machine-B (18 GB). Swarm overhead äter upp begränsade resurser. In-process ger lägre latens. |
-
----
+| Field | Value |
+|-------|-------|
+| **Date** | 2026-06-25 |
+| **Decision** | Use Meta-layer (in-process) instead of Docker Swarm for orchestration |
+| **Alternatives** | Docker Swarm with 6+ parallel workers |
+| **Rationale** | Machine-B has only 18 GB VRAM. Docker would load the same model 2× = 16-20 GB gone. Meta-layer loads 1 model at a time. Eliminates Docker dependency for portability. |
+| **Impact** | Sequential agent execution. Quality focus over throughput. |
 
 ## D02 — Quality Gate ≥ 80/100
 
-| Fält | Värde |
-|------|-------|
-| **Datum** | 2026-06-25 |
-| **Beslut** | Alla agenter måste nå ≥ 80/100 på eval för att sparas till USB |
-| **Alternativ** | Ingen gräns (spara allt), ≥ 70/100, ≥ 90/100 |
-| **Motivering** | Precis som PHASE0_COMPLETE.md säger: förhindrar att USB:t fylls med mediokra agenter. 80 är högt nog för kvalitet men inte ouppnåeligt. 90 vore för strikt i början. |
+| Field | Value |
+|-------|-------|
+| **Date** | 2026-06-25 |
+| **Decision** | All agents must score ≥ 80/100 on eval to be saved to USB |
+| **Alternatives** | Save everything (quantity), or ≥ 90 (elite only) |
+| **Rationale** | Prevents USB from filling with mediocre agents. 80 is high enough for quality but achievable. 90 would be too strict initially. |
+| **Impact** | ~30-40% of agent runs rejected. Historical Learning captures lessons from failures. |
+
+## D03 — VI as Default on Machine-B
+
+| Field | Value |
+|-------|-------|
+| **Date** | 2026-06-25 |
+| **Decision** | Variational Inference instead of NUTS on Machine-B (18 GB VRAM) |
+| **Alternatives** | NUTS for everything (precision), or always VI (speed) |
+| **Rationale** | NUTS requires more VRAM and time. Machine-B has limited resources. VI gives adequate precision in seconds vs minutes for NUTS. NUTS used on Machine-A where compute allows. |
+| **Impact** | Slightly less precise weight optimization on Machine-B. Verified against NUTS periodically. |
+
+## D04 — Dual-Model Strategy (Flash + Pro)
+
+| Field | Value |
+|-------|-------|
+| **Date** | 2026-06-25 |
+| **Decision** | Use deepseek-v4-flash for agent spawn, deepseek-v4-pro for eval/teacher |
+| **Alternatives** | Single model for everything, or local models |
+| **Rationale** | Flash is fast and cheap ($0.14/M output), good enough for 80% of calls. Pro is higher quality ($0.28/M output), essential for eval accuracy. Saves 60% cost vs Pro-only. |
+| **Impact** | Agent spawn: ~$0.001. Judge/Teacher: ~$0.002. Total per iteration: ~$0.003. |
+
+## D05 — Caveman Ultra Default Mode
+
+| Field | Value |
+|-------|-------|
+| **Date** | 2026-06-25 |
+| **Decision** | Caveman Ultra ON by default. No markdown, no fluff, data only. |
+| **Alternatives** | Standard verbose output, or toggle per agent |
+| **Rationale** | 70% token reduction. Machine-parseable output. Faster inference. Combined with RAG: 90% token reduction vs baseline. |
+| **Impact** | Every agent spawn uses ~800 tokens instead of ~8000. Toggle off for human-readable output only. |
+
+## D06 — Atomic Writes for Everything
+
+| Field | Value |
+|-------|-------|
+| **Date** | 2026-06-25 |
+| **Decision** | All USB writes use temp-file + rename pattern |
+| **Alternatives** | Direct writes, write-ahead log, journaling filesystem |
+| **Rationale** | USB disconnect is the #1 corruption risk. Atomic writes guarantee either old or new file exists, never a partial write. |
+| **Impact** | Slightly more I/O (temp file + rename). Guaranteed data integrity. |
+
+## D07 — JSON-Lines Logging
+
+| Field | Value |
+|-------|-------|
+| **Date** | 2026-06-25 |
+| **Decision** | All logs in JSON-lines format (one JSON object per line) |
+| **Alternatives** | Plain text, structured syslog, SQLite |
+| **Rationale** | Machine-readable (grep + jq), space-efficient, append-only (safe for USB), no database dependency. |
+| **Impact** | Easy to query, rotate, and compress. Compatible with log aggregation. |
+
+## D08 — YAML State (Not Database)
+
+| Field | Value |
+|-------|-------|
+| **Date** | 2026-06-25 |
+| **Decision** | Forge state stored as YAML files, not SQLite/Postgres |
+| **Alternatives** | SQLite (single-file DB), PostgreSQL (robust but heavy) |
+| **Rationale** | YAML is human-readable, diffable, version-controllable. No database dependency. Works after unzip. Historical Learning uses SQLite internally for query performance — the exception. |
+| **Impact** | Simpler import/export. Slower queries for large datasets (mitigated by SQLite for Historical Learning). |
+
+## D09 — Sequential Loop (v3.0)
+
+| Field | Value |
+|-------|-------|
+| **Date** | 2026-06-25 |
+| **Decision** | Single sequential loop in v3.0, not parallel |
+| **Alternatives** | Parallel loops for multiple blueprints simultaneously |
+| **Rationale** | Machine-B VRAM limits. Teacher feedback benefits from focused attention. Parallelism added in Phase 1+ when proven. |
+| **Impact** | Longer time to evaluate all 6 blueprints. Higher quality per agent due to focused teacher attention. |
+
+## D10 — Per-Blueprint Skill Loading
+
+| Field | Value |
+|-------|-------|
+| **Date** | 2026-06-25 |
+| **Decision** | Subagents load only their blueprint's skills (3-5), not all 85+ built-in |
+| **Alternatives** | Load all skills, or load none |
+| **Rationale** | Cleaner context = sharper focus = better output. 85 skills in context would be noise. |
+| **Impact** | Agents are narrower but deeper. New skills must be explicitly added to blueprints. |
+
+## D11 — Circuit Breaker Pattern
+
+| Field | Value |
+|-------|-------|
+| **Date** | 2026-06-25 |
+| **Decision** | Implement circuit breaker per blueprint + global |
+| **Alternatives** | Retry indefinitely, or manual intervention |
+| **Rationale** | Prevents wasted API costs on broken loops. After 3-5 consecutive failures, halts and alerts. Auto-resets after timeout. |
+| **Impact** | Prevents runaway costs. Requires human review after breaker trips. |
+
+## D12 — RAG on RTX 3080
+
+| Field | Value |
+|-------|-------|
+| **Date** | 2026-06-25 |
+| **Decision** | Run embeddings on idle RTX 3080 using all-MiniLM-L6-v2 |
+| **Alternatives** | API-based embeddings (cost), or no RAG (slow) |
+| **Rationale** | 3080 is idle during API calls. Embeddings cost nothing locally. 67% token reduction. Combined with Caveman: 90% reduction. |
+| **Impact** | Agents get relevant context instead of everything. Faster, cheaper, better. |
+
+## D13 — Phase 0 as Pure Design
+
+| Field | Value |
+|-------|-------|
+| **Date** | 2026-06-25 |
+| **Decision** | Phase 0 contains only design documentation. No executable code. |
+| **Alternatives** | Build code during design (risk of premature implementation) |
+| **Rationale** | Design the complete system before building anything. Prevents rework. All interfaces specified before implementation. |
+| **Impact** | 54 documents, 14 sections. Phase 1 starts with clear contracts. |
 
 ---
 
-## D03 — VI som default på Machine-B
+## Design Principles (PrecisionForge)
 
-| Fält | Värde |
-|------|-------|
-| **Datum** | 2026-06-25 |
-| **Beslut** | Variational Inference istället för NUTS på Machine-B (18 GB VRAM) |
-| **Alternativ** | NUTS på båda maskiner, VI på båda, HMC |
-| **Motivering** | Speed över precision på begränsad hårdvara. VI kräver ~40% mindre VRAM än NUTS. NUTS används på Machine-A där precision är viktigast. |
-
----
-
-## D04 — Atomära skrivningar överallt
-
-| Fält | Värde |
-|------|-------|
-| **Datum** | 2026-06-25 |
-| **Beslut** | Alla skrivningar till USB använder atomic write (temp + rename) |
-| **Alternativ** | Vanliga fil-skrivningar med flush, databas, journaling filesystem |
-| **Motivering** | USB disconnect safety är högsta prioritet. Temp→rename är enkelt, portabelt, och garanterar att ingen fil blir korrupt. Inget externt beroende (databas) behövs. |
+| Principle | Meaning |
+|-----------|---------|
+| **One logical home** | Every piece of data has exactly one canonical location |
+| **Atomicity first** | All writes are transactional — never partial |
+| **Hardware aware** | System auto-adapts to available resources |
+| **Full traceability** | Every decision, eval, and version change is logged |
+| **Quality gate** | Nothing below 80/100 is saved |
+| **Caveman default** | 70% fewer tokens, 2× faster, 3× cheaper |
+| **Self-contained** | The USB is the entire system |
 
 ---
 
-## D05 — JSON-lines för loggar
-
-| Fält | Värde |
-|------|-------|
-| **Datum** | 2026-06-25 |
-| **Beslut** | Alla loggar skrivs som JSON-lines (en JSON per rad) |
-| **Alternativ** | Vanlig text, YAML, SQLite, syslog |
-| **Motivering** | Maskinläsbart, utrymmeseffektivt, lätt att söka med `grep`/`jq`. Ingen databas att korrumpera. |
-
----
-
-## D06 — 48 GB lagringsbudget
-
-| Fält | Värde |
-|------|-------|
-| **Datum** | 2026-06-25 |
-| **Beslut** | Total USB-budget: 48 GB |
-| **Alternativ** | 16 GB, 32 GB, 64 GB, 128 GB |
-| **Motivering** | Får plats på standard 64 GB USB med ~25% marginal. Tillräckligt för 250-350 agenter + knowledge + skills. |
-
----
-
-## D07 — Per-blueprint skill loading
-
-| Fält | Värde |
-|------|-------|
-| **Datum** | 2026-06-25 |
-| **Beslut** | Skills laddas per blueprint, inte globalt |
-| **Alternativ** | Global skill pool, shared skills directory, no skills |
-| **Motivering** | Renare kontext, skarpare agent-fokus. En code-reviewer ska inte få research-synthesizer-skills i sin kontext. Detta minskar också token-användning. |
-
----
-
-## D08 — 8 mänskliga oversight gates
-
-| Fält | Värde |
-|------|-------|
-| **Datum** | 2026-06-25 |
-| **Beslut** | 8 specifika punkter där människa granskar/godkänner |
-| **Alternativ** | Full autonomi från start, 20+ gates (mikro-management), 2-3 gates |
-| **Motivering** | Strategisk kontroll utan mikromanagement. Viktiga brytpunkter (blueprint creation, major version, security incidents) kräver människa, resten körs autonomt. |
-
----
-
-## D09 — Single-prompt import
-
-| Fält | Värde |
-|------|-------|
-| **Datum** | 2026-06-25 |
-| **Beslut** | Hela Forge importeras med en enda prompt via import.zip |
-| **Alternativ** | Multi-steg import, git clone, nätverks-sync |
-| **Motivering** | Maximal portabilitet. En prompt, en zip, klart. Fungerar även utan internet. |
-
----
-
-## D10 — DeepSeek som primär cloud-provider
-
-| Fält | Värde |
-|------|-------|
-| **Datum** | 2026-06-25 |
-| **Beslut** | deepseek-v4-pro som default cloud-modell för evaluering |
-| **Alternativ** | Claude, Grok, GPT-4, Gemini, enbart lokala modeller |
-| **Motivering** | Bäst pris/prestanda-förhållande. $0.14/$0.28 per 1M tokens vs $3/$15 för Claude. Lokala Ollama-modeller används för enklare uppgifter och kostnadsbesparing. |
-
----
-
-## D11 — 6 domäner (inte fler, inte färre)
-
-| Fält | Värde |
-|------|-------|
-| **Datum** | 2026-06-25 |
-| **Beslut** | Exakt 6 core-domäner: Coding, Research, Automation, Documentation, Testing, Meta |
-| **Alternativ** | 4 domäner, 10+ domäner, generisk agent |
-| **Motivering** | Täcker de viktigaste kompetensområdena utan att sprida ut sig. Varje domän har en blueprint + benchmark. Meta-domänen möjliggör självförbättring. |
-
----
-
-## D12 — Agent-isolering via sandboxes (inte shared state)
-
-| Fält | Värde |
-|------|-------|
-| **Datum** | 2026-06-25 |
-| **Beslut** | Agenter delar state via USB-filsystem, inte via shared memory |
-| **Alternativ** | Shared mutable state, message passing, database |
-| **Motivering** | Förhindrar prompt injection mellan agenter. Full spårbarhet — allt är filer på USB. Knowledge överlever individuella crash:er. |
-
----
-
-## D13 — API-nycklar läses från miljövariabler, aldrig sparade i forge-filer
-
-| Fält | Värde |
-|------|-------|
-| **Datum** | 2026-06-25 |
-| **Beslut** | API-nycklar hanteras av Hermes env/auth-system, aldrig i forge-filer |
-| **Alternativ** | .env-fil i forge-roten, krypterad fil på USB, hardcoded |
-| **Motivering** | Säkerhet. Om USB:t tappas bort ska inga API-nycklar läcka. Hermes hanterar rotation och credential pooling. |
-
----
-
-## D14 — 300 sekunder timeout för agent-spawn
-
-| Fält | Värde |
-|------|-------|
-| **Datum** | 2026-06-25 |
-| **Beslut** | Default timeout för agent-spawn är 300 sekunder |
-| **Alternativ** | 60s, 120s, 600s, obegränsat |
-| **Motivering** | 300s är tillräckligt för även komplexa kodgranskningar men förhindrar att en agent hänger i evighet. Konfigurerbart per blueprint. |
-
----
-
-## D15 — Checkpoint-intervall 25-45 minuter
-
-| Fält | Värde |
-|------|-------|
-| **Datum** | 2026-06-25 |
-| **Beslut** | Automatisk checkpoint var 25:e (Machine-B) till 45:e (Machine-A) minut |
-| **Alternativ** | Varje loop-iteration, var 5:e minut, endast manuellt |
-| **Motivering** | Frekvent nog att dataförlust är minimal vid crash, men inte så frekvent att det stör loop-flödet. Anpassas efter hårdvara (snabbare på svagare maskiner). |
-
----
-
-**Status:** Phase 0 — Living document. Uppdateras vid varje nytt designbeslut.
-**Antal beslut:** 15
-**Senast uppdaterad:** 2026-06-25
+**Status:** 13 decisions documented with alternatives and rationale.
