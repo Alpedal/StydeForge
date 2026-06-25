@@ -38,10 +38,11 @@ Phase 1 implements.
 4. Load blueprints/<name>/config.yaml
 5. Load blueprints/<name>/skills/ (all SKILL.md files)
 6. Load eval/benchmarks/<benchmark>/task.md
-7. Load eval/benchmarks/<benchmark>/rubric.yaml
-8. Run validate_blueprint(name) → must pass
-9. Get historical context from Historical Learning System
-10. Build spawn_context string
+- Load eval/benchmarks/<benchmark>/rubric.yaml
+8. Run RAG retrieval: embed task → search vector store → get top-3 chunks
+9. Run validate_blueprint(name) → must pass
+10. Get historical context from Historical Learning System
+11. Build spawn_context string
 ```
 
 **Output:** `spawn_context.md`, `spawn_task.md` written to agent directory

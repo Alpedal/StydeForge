@@ -34,6 +34,7 @@ a continuous loop of spawning, evaluation, improvement, and checkpointing.
      │ • Profile match │   │ • Historical Learn│   │ • Give feedback │
      │ • Adapt params  │   │ • Version Incr    │   │ • Extract skills│
      │ • Resource Gov  │   │ • Health Monitor  │   │ • Coach agents  │
+     │ • RAG embeddings│   │                   │   │                 │
      └────────┬────────┘   └─────────┬─────────┘   └────────┬────────┘
               │                       │                       │
               └───────────────────────┼───────────────────────┘
@@ -44,6 +45,7 @@ a continuous loop of spawning, evaluation, improvement, and checkpointing.
                          │ • Skill Loading         │
                          │ • Blueprint Validation  │
                          │ • Caveman Ultra inject  │
+                         │ • RAG context injection │
                          │ • delegate_task()       │
                          └────────────┬────────────┘
                                       │

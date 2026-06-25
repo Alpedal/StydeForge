@@ -7,7 +7,7 @@
 
 ---
 
-## Dokumentöversikt (53 dokument)
+## Dokumentöversikt (54 dokument)
 
 | # | Sektion | Dokument | Beskrivning |
 |---|---------|----------|-------------|
@@ -54,15 +54,15 @@
 | 10 | Operations | `Human_Oversight_Points.md` | Mänskliga granskningspunkter |
 | 10 | Operations | `API_Key_Management.md` | API-nycklar, providers, validering |
 | 10 | Operations | `Caveman_Ultra_Mode.md` | Maxeffektivt operativt läge — 70% färre tokens, 2× snabbare |
+| 11 | Knowledge | `Knowledge_Management.md` | Kunskapshantering, indexering, livscykel |
+| 12 | Teacher | `Teacher_Agent.md` | Teacher/coach loop, feedback, skill-extrahering |
+| 13 | Hooks | `Hooks_Events.md` | Eventsystem, 17 events, 4 hook-typer |
+| 14 | RAG | `RAG_Retrieval.md` | Vector embeddings, FAISS, 3080-accelerated retrieval |
 | 00 | Reference | `00_Glossary.md` | Samlad ordlista (A-Ö) |
 | 00 | Reference | `DECISIONS.md` | Design Decision Log (15 beslut) |
 | 00 | Reference | `State_Machines.md` | Alla state machines (diagram) |
 | 00 | Reference | `Config_Reference.md` | Samtliga config-nycklar |
 | 00 | Reference | `Testing_Strategy.md` | Teststrategi för Forge-infrastruktur |
-| 11 | Design Gaps | `Knowledge_Architecture.md` | Kunskapshantering (01_KNOWLEDGE) |
-| 11 | Design Gaps | `Teacher_Agent_Design.md` | Teacher/coach-agentens design |
-| 11 | Design Gaps | `Hooks_and_Events.md` | Hooks-systemet (03_HOOKS) |
-| 11 | Design Gaps | `Multi_Machine_Sync.md` | Synkronisering Machine-A ↔ Machine-B |
 
 ---
 

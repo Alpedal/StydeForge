@@ -42,9 +42,10 @@ ACQUIRE → SYNTHESIZE → INDEX → STORE → RETRIEVE → UPDATE
 - `index.json` — searchable index
 
 ### Retrieve
-- Historical Learning queries knowledge base for agent context
-- Relevant knowledge injected into agent spawn context
-- Relevance scored by domain match
+- RAG system searches vector store for relevant chunks
+- Query embedded on RTX 3080 (all-MiniLM-L6-v2, 384-dim)
+- Top-k chunks injected into agent context
+- Relevance scored by cosine similarity
 
 ### Update
 - New research findings merged into existing corpus
