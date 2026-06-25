@@ -1,6 +1,6 @@
 # Benchmark Catalog
 
-**Hermes Forge v3.0 — Phase 0**
+**Styde Forge v3.0 — Phase 0**
 **Section:** 03_Eval_Pipeline
 
 ---

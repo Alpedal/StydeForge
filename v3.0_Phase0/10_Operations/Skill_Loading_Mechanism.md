@@ -1,6 +1,6 @@
 # Skill Loading Mechanism
 
-**Hermes Forge v3.0 — Phase 0**
+**Styde Forge v3.0 — Phase 0**
 **Section:** 10_Operations
 
 ---
@@ -85,7 +85,7 @@ CAVEMAN ULTRA MODE ACTIVE:
 
     # Build spawn context
     spawn_context = f"""
-You are a {blueprint_name} agent in the Hermes Forge ecosystem.
+You are a {blueprint_name} agent in the Styde Forge ecosystem.
 
 ## Your Purpose
 {blueprint_md}

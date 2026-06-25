@@ -1,6 +1,6 @@
 # Risk Register
 
-**Hermes Forge v3.0 — Phase 0**
+**Styde Forge v3.0 — Phase 0**
 **Section:** 06_Persistence_Safety
 
 ---

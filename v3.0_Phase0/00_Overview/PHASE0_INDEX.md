@@ -1,4 +1,4 @@
-# Hermes Forge v3.0 — Phase 0 Index
+# Styde Forge v3.0 — Phase 0 Index
 
 **Kodnamn:** The Crucible
 **Typ:** Portable Evolutionary Elite Agent Refinery

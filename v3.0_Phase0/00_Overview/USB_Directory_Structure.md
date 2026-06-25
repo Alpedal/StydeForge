@@ -1,6 +1,6 @@
 # USB Directory Structure
 
-**Hermes Forge v3.0 — Phase 0**
+**Styde Forge v3.0 — Phase 0**
 **Section:** 00_Overview
 
 ---

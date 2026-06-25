@@ -1,6 +1,6 @@
 # API & Key Management
 
-**Hermes Forge v3.0 — Phase 0**
+**Styde Forge v3.0 — Phase 0**
 **Section:** 10_Operations
 
 ---

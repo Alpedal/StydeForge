@@ -1,9 +1,9 @@
-# Hermes Forge v3.0 — Glossary
+# Styde Forge v3.0 — Glossary
 
 **"The Crucible"**
 **Phase 0 — Reference**
 
-En samlad ordlista över alla begrepp i Hermes Forge-ekosystemet.
+En samlad ordlista över alla begrepp i Styde Forge-ekosystemet.
 Används som referens vid läsning av alla design-dokument och vid Phase 1-implementering.
 
 ---
@@ -58,7 +58,7 @@ Viktad summa av self-eval och judge-eval. Formel: `self_eval.score * 0.3 + judge
 Lager 3 i evalueringspipelinen. Flera oberoende judges (t.ex. DeepSeek + Claude + Grok) utvärderar samma agent-output och resultaten jämförs för att identifiera avvikelser.
 
 **Crucible, The**
-Kodnamn för Hermes Forge v3.0. Syftar på smältdegeln där råa blueprints förädlas till elit-agenter.
+Kodnamn för Styde Forge v3.0. Syftar på smältdegeln där råa blueprints förädlas till elit-agenter.
 
 ---
 
@@ -85,7 +85,7 @@ Sex-lagers utvärderingssystem: 1) Self-Eval, 2) LLM-as-Judge, 3) Cross-Judge Co
 ## F
 
 **Forge**
-Hermes Forge som helhet — det självförbättrande ekosystemet av elit-agenter.
+Styde Forge som helhet — det självförbättrande ekosystemet av elit-agenter.
 
 ---
 
@@ -102,7 +102,7 @@ En version av en agent skapad genom en loop-iteration. Varje generation har ett 
 En maskinspecifik konfiguration (pontus-main, pontus-light, pontus-beast) som definierar tillgänglig VRAM, RAM, CPU, sampling-metod, och modellval.
 
 **Hermes Agent**
-Den underliggande AI-plattformen (v0.17.0+) som Hermes Forge körs ovanpå. Tillhandahåller `delegate_task`, verktyg, och API-hantering.
+Den underliggande AI-plattformen (v0.17.0+) som Styde Forge körs ovanpå. Tillhandahåller `delegate_task`, verktyg, och API-hantering.
 
 **Historical Learning System**
 Komponent i meta-lagret. SQLite-databas som analyserar tidigare generationer, eval-resultat, och teacher-feedback för att driva kontinuerlig förbättring.
@@ -115,7 +115,7 @@ En trigger-baserad integration som körs vid specifika events i Forge (t.ex. pre
 ## I
 
 **Import Strategy**
-En-prompt-metoden för att importera en hel Hermes Forge på en ny maskin. USB → zip → extrahera → validera → kör.
+En-prompt-metoden för att importera en hel Styde Forge på en ny maskin. USB → zip → extrahera → validera → kör.
 
 ---
 

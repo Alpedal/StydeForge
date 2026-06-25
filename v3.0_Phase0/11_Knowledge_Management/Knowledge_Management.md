@@ -1,6 +1,6 @@
 # Knowledge Management
 
-**Hermes Forge v3.0 — Phase 0**
+**Styde Forge v3.0 — Phase 0**
 **Section:** 11_Knowledge_Management
 
 ---

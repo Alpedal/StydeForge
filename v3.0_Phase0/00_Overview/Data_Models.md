@@ -1,6 +1,6 @@
 # Data Models
 
-**Hermes Forge v3.0 — Phase 0**
+**Styde Forge v3.0 — Phase 0**
 **Section:** 00_Overview
 
 ---
@@ -117,7 +117,7 @@ improvements:
 ## Lineage
 - Parent blueprint: code-reviewer v1
 - Model: deepseek-v4-pro
-- Spawned by: Hermes Forge v3.0
+- Spawned by: Styde Forge v3.0
 ```
 
 ---

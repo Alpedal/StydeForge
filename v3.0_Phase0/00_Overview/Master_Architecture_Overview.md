@@ -1,13 +1,13 @@
 # Master Architecture Overview
 
-**Hermes Forge v3.0 — The Crucible**
+**Styde Forge v3.0 — The Crucible**
 **Phase 0 Design Document**
 
 ---
 
 ## 1. Vision
 
-Hermes Forge v3.0 is a **portable, evolutionary elite-agent refinery** on USB.
+Styde Forge v3.0 is a **portable, evolutionary elite-agent refinery** on USB.
 
 It transforms raw agent blueprints into world-class specialized agents through
 a continuous loop of spawning, evaluation, improvement, and checkpointing.

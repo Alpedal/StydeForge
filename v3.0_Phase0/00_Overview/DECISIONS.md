@@ -1,6 +1,6 @@
 # Design Decision Log
 
-**Hermes Forge v3.0 — "The Crucible"**
+**Styde Forge v3.0 — "The Crucible"**
 **Phase 0 — Reference**
 
 Varje designbeslut loggas här med datum, alternativ som övervägdes, och motivering.

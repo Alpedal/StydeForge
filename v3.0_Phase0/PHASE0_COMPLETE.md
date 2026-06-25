@@ -1,6 +1,6 @@
 # PHASE 0 — COMPLETE
 
-**Hermes Forge v3.0 "The Crucible"**
+**Styde Forge v3.0 "The Crucible"**
 **Portable Evolutionary Elite Agent Refinery**
 **Date:** 2026-06-25
 **Status:** DESIGN COMPLETE ✅

@@ -1,13 +1,13 @@
 # Import Strategy
 
-**Hermes Forge v3.0 — Phase 0**
+**Styde Forge v3.0 — Phase 0**
 **Section:** 08_Import_Export
 
 ---
 
 ## 1. Purpose
 
-Import the entire Hermes Forge on any machine with a single prompt.
+Import the entire Styde Forge on any machine with a single prompt.
 All state preserved, hardware auto-detected, loop ready to resume.
 Zero manual configuration required.
 
@@ -16,7 +16,7 @@ Zero manual configuration required.
 ## 2. Single-Prompt Import
 
 ```
-Läs in och importera Hermes Forge från E:\HermesForge\.
+Läs in och importera Styde Forge från E:\HermesForge\.
 Följ instruktionerna i v3.0_Phase0/00_Overview/PHASE0_INDEX.md.
 ```
 

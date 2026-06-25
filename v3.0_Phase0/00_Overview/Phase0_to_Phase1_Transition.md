@@ -1,6 +1,6 @@
 # Phase 0 → Phase 1 Transition Plan
 
-**Hermes Forge v3.0 — Phase 0**
+**Styde Forge v3.0 — Phase 0**
 **Section:** 00_Overview
 
 ---

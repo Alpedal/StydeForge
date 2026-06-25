@@ -1,6 +1,6 @@
 # Vision and Goals
 
-**Hermes Forge v3.0 — The Crucible**
+**Styde Forge v3.0 — The Crucible**
 
 ---
 
@@ -10,7 +10,7 @@
 > transformed into world-class specialized agents through precision and
 > iterative purity.
 
-Hermes Forge v3.0 is not a content factory. It does not maximize GB/hour.
+Styde Forge v3.0 is not a content factory. It does not maximize GB/hour.
 It maximizes **agent quality per generation** through continuous evaluation,
 probabilistic weight optimization, and teacher-guided improvement.
 

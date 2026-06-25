@@ -1,6 +1,6 @@
 # Hooks & Events
 
-**Hermes Forge v3.0 — Phase 0**
+**Styde Forge v3.0 — Phase 0**
 **Section:** 13_Hooks_Events
 
 ---

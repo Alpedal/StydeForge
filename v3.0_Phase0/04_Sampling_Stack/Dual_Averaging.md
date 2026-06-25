@@ -1,6 +1,6 @@
 # Dual Averaging
 
-**Hermes Forge v3.0 — Phase 0**
+**Styde Forge v3.0 — Phase 0**
 **Section:** 04_Sampling_Stack
 
 ---

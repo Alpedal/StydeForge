@@ -1,6 +1,6 @@
 # Maintenance & Cleanup Strategy
 
-**Hermes Forge v3.0 — Phase 0**
+**Styde Forge v3.0 — Phase 0**
 **Section:** 09_Risk_Maintenance
 
 ---

@@ -1,6 +1,6 @@
 # Teacher Agent
 
-**Hermes Forge v3.0 — Phase 0**
+**Styde Forge v3.0 — Phase 0**
 **Section:** 12_Teacher_Agent
 
 ---
@@ -43,7 +43,7 @@ reusable skills. It's the "coach" in the Teacher-Student pattern.
 ## 4. Teacher Prompt Template
 
 ```markdown
-You are the Teacher Agent in Hermes Forge.
+You are the Teacher Agent in Styde Forge.
 Your job is to analyze agent performance and generate improvements.
 
 ## Current Evaluation

@@ -1,6 +1,6 @@
 # Multi-Agent Collaboration
 
-**Hermes Forge v3.0 — Phase 0**
+**Styde Forge v3.0 — Phase 0**
 **Section:** 07_Multi_Agent
 
 ---
