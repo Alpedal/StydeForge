@@ -53,4 +53,50 @@ Health = EvalTrend(30%) + ErrorRate(25%) + Hardware(20%)
 
 ---
 
+## 5. Long-Term Improvement Metrics
+
+Tracks whether the forge actually gets smarter over weeks/months:
+
+```python
+def long_term_metrics() -> dict:
+    return {
+        "weeks_running": 0,
+        "total_iterations": 0,
+        "agents_spawned": 0,
+        "agents_saved_to_usb": 0,
+
+        "trends": {
+            "avg_score_week1": None,     # Baseline
+            "avg_score_current_week": None,
+            "score_trend": "flat",       # declining | flat | improving | accelerating
+
+            "first_pass_rate_week1": None,  # % agents ≥80 on first try
+            "first_pass_rate_current": None,
+            "efficiency_trend": "flat",
+
+            "avg_tokens_per_agent_week1": None,
+            "avg_tokens_current": None,
+            "token_efficiency": "flat",   # using fewer tokens = getting more efficient
+
+            "avg_retries_per_agent": None,
+            "retry_trend": "flat",        # fewer retries = agents getting better
+        },
+
+        "top_agents": [],  # Top 10 by score
+        "most_improved": [],  # Agents with largest version-to-version delta
+    }
+```
+
+### Key Questions Answered
+
+| Question | Metric |
+|----------|--------|
+| Is the forge getting better? | `score_trend` — should be "improving" or "accelerating" |
+| Are agents getting more efficient? | `token_efficiency` — should decrease over time |
+| Which blueprints improve fastest? | `most_improved` list |
+| Are we spending more or less per agent? | `cost_per_agent` trend |
+| Is first-pass rate improving? | `first_pass_rate` — should increase |
+
+---
+
 **Status:** Implemented. Monitoring-ready.

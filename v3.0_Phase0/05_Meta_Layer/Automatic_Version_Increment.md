@@ -138,4 +138,66 @@ version_decision:
 
 ---
 
+## 8. Blueprint Diff & Changelog
+
+Every version change generates a diff showing exactly what changed:
+
+```yaml
+version_diff:
+  blueprint: "code-reviewer"
+  old_version: "2.4.1"
+  new_version: "3.0.0"
+  timestamp: "2026-06-25T13:00:00Z"
+  eval_delta: 0.19
+
+  changes:
+    persona:
+      status: "modified"
+      diff_summary: "Added edge case checklist, rewrote review process"
+      lines_added: 12
+      lines_removed: 3
+
+    skills:
+      - name: "sql_injection_detection"
+        status: "added"
+        reason: "Extracted from agent-code-reviewer-20260625-123000"
+      - name: "edge_case_checklist_v1"
+        status: "added"
+        reason: "Teacher recommendation from cycle 47"
+
+    config:
+      status: "unchanged"
+
+  changelog: |
+    v3.0.0:
+    - Added edge case detection checklist to persona
+    - New skill: sql_injection_detection (extracted from agent)
+    - New skill: edge_case_checklist_v1 (teacher recommendation)
+    - Eval improvement: +0.19 (83 → expected ~87-90)
+```
+
+### Rollback Support
+
+```python
+def rollback_blueprint(name: str, target_version: str):
+    """Restore a blueprint to a previous version."""
+    versions_dir = BLUEPRINTS_DIR / name / "versions"
+    target_file = versions_dir / f"v{target_version}.yaml"
+
+    if not target_file.exists():
+        raise VersionError(f"Version {target_version} not found")
+
+    # Save current as backup
+    current = load_blueprint(name)
+    save_version(name, current)
+
+    # Restore target
+    target = load_yaml(target_file)
+    save_blueprint(name, target)
+
+    log(f"Rolled back {name} from {current['version']} to {target_version}")
+```
+
+---
+
 **Status:** Implemented. Semantic versioning with 7 decision rules.

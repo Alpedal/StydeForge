@@ -334,6 +334,63 @@ def loop_with_errors(blueprint: str, benchmark: str) -> dict:
 
 ---
 
+## 7. Circuit Breaker
+
+Prevents cascade failures. If the loop keeps failing, stop — don't waste API money.
+
+```python
+class CircuitBreaker:
+    def __init__(self, failure_threshold=5, reset_timeout_min=30):
+        self.threshold = failure_threshold
+        self.reset_timeout = reset_timeout_min * 60
+        self.failures = 0
+        self.last_failure = None
+        self.state = "closed"  # closed → open → half_open → closed
+
+    def record_failure(self):
+        self.failures += 1
+        self.last_failure = time.time()
+        if self.failures >= self.threshold:
+            self.state = "open"
+            log_critical(f"Circuit breaker OPEN after {self.failures} failures")
+
+    def record_success(self):
+        if self.state == "half_open":
+            self.state = "closed"
+            self.failures = 0
+        elif self.state == "closed":
+            self.failures = max(0, self.failures - 1)
+
+    def allow_request(self) -> bool:
+        if self.state == "closed":
+            return True
+        if self.state == "open":
+            if time.time() - self.last_failure > self.reset_timeout:
+                self.state = "half_open"
+                return True
+            return False
+        return True  # half_open: allow one probe request
+```
+
+### Circuit States
+
+| State | Meaning | Action |
+|-------|---------|--------|
+| **closed** | Normal operation | Allow all requests |
+| **open** | Too many failures | Block all requests |
+| **half_open** | Testing recovery | Allow one probe request |
+
+### Triggers
+
+| Event | Circuit breaker | Threshold |
+|-------|----------------|-----------|
+| 3 consecutive eval < 70 | Per-blueprint breaker | 3 failures → open |
+| 5 API errors in 10 min | Global breaker | 5 failures → open |
+| delegate_task timeout 3× | Per-blueprint breaker | 3 failures → open |
+| Disk full | Global breaker | 1 failure → open |
+
+---
+
 ## Related Documents
 
 - `Component_Interfaces.md` — How spawn/eval/checkpoint components communicate

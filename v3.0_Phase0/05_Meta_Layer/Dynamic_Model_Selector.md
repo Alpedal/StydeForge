@@ -95,6 +95,37 @@ def select_with_failover(role: str) -> str:
 
 ---
 
+## 7. Cost-Aware Routing (Phase 1+)
+
+When multiple providers are available, route to cheapest that meets quality bar:
+
+```python
+def cost_aware_route(role: str, task_complexity: str = "medium") -> str:
+    """
+    Simple tasks → try Flash first
+    Complex tasks → Pro directly (skip Flash retry)
+    """
+    ROUTES = {
+        ("agent", "simple"):   "deepseek-v4-flash",
+        ("agent", "medium"):   "deepseek-v4-flash",
+        ("agent", "complex"):  "deepseek-v4-pro",    # Skip retries
+        ("judge", "any"):      "deepseek-v4-pro",    # Quality-critical
+        ("teacher", "any"):    "deepseek-v4-pro",    # Quality-critical
+    }
+    key = (role, task_complexity if role == "agent" else "any")
+    return ROUTES.get(key, "deepseek-v4-flash")
+```
+
+### Cost Comparison
+
+| Strategy | Cost/iteration | Quality | Risk |
+|----------|---------------|---------|------|
+| Flash only | $0.001 | Good | Complex tasks may need retries |
+| Pro only | $0.005 | Best | 5× cost for simple tasks |
+| **Cost-aware** | **$0.002** | **Best** | Slightly more complex routing |
+
+---
+
 **Status:** v3.0 — rule-based. v3.1+ — data-driven.
 
 ---
